@@ -9,7 +9,7 @@ Katana is a High Performance Computing (HPC) cluster. It allows users to run com
   <figcaption>Simple HPC Architecture</figcaption>
 </figure>
 
-**⚠ Warning:** Do not run computationally intensive processes on **login nodes**; use **compute nodes** instead.
+**�? Warning:** Do not run computationally intensive processes on **login nodes**; use **compute nodes** instead.
 
 Jobs are submitted from the login node, which delivers them to the **Head Node** for job and resource management. Once resources are allocated, the job will run on one or more compute nodes.
 
@@ -17,8 +17,8 @@ Katana uses OpenPBS to manage resources and schedule jobs.
 
 ### Job Types
 
-- **Batch Job** – Runs a scripted job automatically from start to finish without user intervention. Ideal for long-running production tasks.
-- **Interactive Job** – Provides a live shell session on compute nodes for experimentation and debugging. Useful for testing and planning batch jobs.  
+- **Batch Job** �? Runs a scripted job automatically from start to finish without user intervention. Ideal for long-running production tasks.
+- **Interactive Job** �? Provides a live shell session on compute nodes for experimentation and debugging. Useful for testing and planning batch jobs.  
 
 All jobs enter a **queue** while waiting for resources.
 
@@ -174,6 +174,45 @@ qsub myjob.pbs
 qstat job_id (e.g., qstat 6787878)
 ```
 
+## Requesting GPUs in Your Jobs
+
+Many applications on Katana can make use of GPUs for faster computation.  
+You can request GPUs in both **interactive** and **batch** jobs by adding the `ngpus` resource.
+
+### Basic GPU Request
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1
+```
+This requests:
+- 1 GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don��t specify `ngpus`, the default is `ngpus=0` (no GPU).
+
+---
+
+### Requesting a Specific GPU Model
+Different Katana nodes have different GPU models available (e.g. V100, A100).  
+You can check available models with:
+
+```bash
+pbsnodes -av | grep gpu_model
+```
+
+Once you know which models exist, you can request a specific one like this:
+
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1:gpu_model=A100
+```
+
+This example requests:
+- 1 **A100** GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don��t specify `gpu_model`, the scheduler will assign **any available GPU**.
+
 ---
 
 ## Interactive Jobs (qsub -I)
@@ -266,8 +305,8 @@ Typical job queue limit cut-offs are shown below. **The walltime is what determi
 
 ## Restech GitHub Repositories
 
-- [Restech-HPC](https://github.com/unsw-edu-au/Restech-HPC/tree/master/hpc-examples) – Example Katana scripts  
-- [UNSW-Data-Archive](https://github.com/unsw-edu-au/UNSW-Data-Archive) – Upload/download scripts  
-- [UNSW-eNotebook-LabArchives](https://github.com/unsw-edu-au/UNSW-eNotebook-LabArchives) – LabArchives widgets
+- [Restech-HPC](https://github.com/unsw-edu-au/Restech-HPC/tree/master/hpc-examples) �? Example Katana scripts  
+- [UNSW-Data-Archive](https://github.com/unsw-edu-au/UNSW-Data-Archive) �? Upload/download scripts  
+- [UNSW-eNotebook-LabArchives](https://github.com/unsw-edu-au/UNSW-eNotebook-LabArchives) �? LabArchives widgets
 
 ---
