@@ -1,6 +1,6 @@
 title: Accessing Katana
 
-## Requesting an Account
+<h2> Requesting an Account </h2>
 
 To apply for an account, please fill out the ServicePoint form [Katana Access Request](https://servicepoint.unsw.edu.au/casm.html#/bui/home/search?selectedCategoryId=pcat:433408&selectedCategoryName=Katana%20Access%20Request),
 including your role within UNSW and the name of your supervisor or head of your research group.
@@ -16,7 +16,7 @@ users can only use a 12 hour [Walltime](../../help_support/glossary#walltime).
 If your needs require more CPU hours or consulation, some Faculties, Schools and Research Groups have invested in Katana and have a higher level of access.
 Users in this situation should speak to their supervisor.
 
-## Accessing Katana
+<h2> Accessing Katana </h2>
 
 <div style="display: flex; justify-content: space-around;">
     <div style="flex: 1; margin: 0 10px;">
@@ -38,7 +38,7 @@ Users in this situation should speak to their supervisor.
 
 
 
-## Connecting to Katana via Terminal
+<h2> Connecting to Katana via Terminal </h2>
 
 !!! note "Operating System"
     === "Linux and Mac"

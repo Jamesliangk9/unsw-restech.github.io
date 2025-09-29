@@ -21,7 +21,7 @@ Understanding these factors can help you make better choices about resource requ
 
 ## Managing Your Own Jobs
 
-Once your jobs are in the queue or running, you’ll want to monitor and manage them. Common tasks include:
+Once your jobs are in the queue or running, you'll want to monitor and manage them. Common tasks include:
 
 - **Checking job status**
 - **Deleting jobs you no longer need**
@@ -29,7 +29,7 @@ Once your jobs are in the queue or running, you’ll want to monitor and manage 
 
 On Katana, these taskes are manged using PBS commmands as follows:
 
-### Checking Job Status with `qstat`
+<h3> Checking Job Status with `qstat`  </h3>
 
 `qstat` shows the jobs currently in the queue. Without options it prints **all jobs**, so you may want to filter.
 
@@ -37,7 +37,7 @@ On Katana, these taskes are manged using PBS commmands as follows:
 		<img src="../../assets/qstat.png" style="max-width: 100%; height: 150px;">
 </div>
 
-#### Show Only Your Jobs
+<h4> Show Only Your Jobs </h4>
 
 Use the `-u` option with your username or `$USER` environment variable (Which is automatically set to your username/zID):
 
@@ -68,7 +68,7 @@ The `-s` option adds more detail such as which node the job is on:
 [z1234567@katana2 src]$ qstat -su $USER
 ```
 
-### Get Full Details of a Job
+<h3> Get Full Details </h3>
 ```bash
 [z1234567@katana2 src]$ qstat -f 6900507
 ```
@@ -84,7 +84,7 @@ If you want to see job status for a completed job, use the `-x` or `-H` option w
 
 ---
 
-### Deleting Jobs with `qdel`
+<h3> Deleting Jobs with `qdel` </h3>
 
 If you need to delete a job, use `qdel` followed by the job ID:
 
@@ -94,7 +94,7 @@ If you need to delete a job, use `qdel` followed by the job ID:
 
 ---
 
-### Altering Jobs with `qalter`
+<h3> Altering Jobs with `qalter` </h3>
 
 If there is a need to reduce resource requests (e.g. walltime, memory) for a job that is still in the queue (not yet running), you can use `qalter`. For example, to change the number of CPUs and memory:
 
@@ -136,7 +136,7 @@ Job execution was successful. Exit Status 0.
 !!! Note
     'cat' is used here to display the contents of the file. You can also use 'nano' to view it.
 
-If you don’t know where your output file is, use `qstat -xf JOBID` and look for `Output_Path`. For example:
+If you don't know where your output file is, use `qstat -xf JOBID` and look for `Output_Path`. For example:
 
 ```bash
 [z1234567@katana2:~]$ qstat -xf 4682962
@@ -149,7 +149,7 @@ For interactive jobs, the output file will have a name like `4638435.kman.restec
 
 ## Checking Nodes and Jobs on the Cluster
 
-### View All Nodes with `pstat`
+<h3> View All Nodes with `pstat` </h3>
 
 The `pstat` command gives an overview of all compute nodes and what jobs are running on them:
 
@@ -165,9 +165,9 @@ k006  normal-physics          job-busy      32/32   180/ 187gb
 ...
 ```
 
-In each row you can see the **node ID**, queue name, whether it’s free or busy, how many CPUs are in use, and memory usage.
+In each row you can see the **node ID**, queue name, whether it's free or busy, how many CPUs are in use, and memory usage.
 
-### Detailed Info About One Node with `pbsnodes`
+<h3> Detailed Info About One Node with `pbsnodes` </h3>
 
 The `pbsnodes` command shows detailed information about nodes. Without arguments it can be overwhelming. Use it with a node name to narrow results:
 
@@ -194,11 +194,11 @@ This lets you check CPU type, available memory, assigned jobs, and more.
 **Summary:**  
 Typical workflow:
 
-- Submit job → qsub myjob.pbs
+- Submit job - qsub myjob.pbs
 
-- Check status → qstat -u $USER
+- Check status - qstat -u $USER
 
-- If needed, adjust → qalter … or cancel → qdel JOBID
+- If needed, adjust - qalter ; or cancel - qdel JOBID
 
-- After it finishes, check output file → cat jobid.OU  
+- After it finishes, check output file - cat jobid.OU  
 
