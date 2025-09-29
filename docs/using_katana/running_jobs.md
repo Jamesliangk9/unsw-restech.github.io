@@ -2,14 +2,14 @@
 
 ## Brief Overview
 
-Katana is a High Performance Computing (HPC) cluster. It allows users to run computationally intensive programs on powerful compute nodes. **Login nodes** are only for preparing, submitting, and managing jobs—not for heavy calculations.
+Katana is a High Performance Computing (HPC) cluster. It allows users to run computationally intensive programs on powerful compute nodes. **Login nodes** are only for preparing, submitting, and managing jobs鈥攏ot for heavy calculations.
 
 <figure markdown>
   ![Simple HPC Architecture](../assets/simple_HPC.png){ width="800" }
   <figcaption>Simple HPC Architecture</figcaption>
 </figure>
 
-**⚠ Warning:** Do not run computationally intensive processes on **login nodes**; use **compute nodes** instead.
+**鈿� Warning:** Do not run computationally intensive processes on **login nodes**; use **compute nodes** instead.
 
 Jobs are submitted from the login node, which delivers them to the **Head Node** for job and resource management. Once resources are allocated, the job will run on one or more compute nodes.
 
@@ -17,8 +17,8 @@ Katana uses OpenPBS to manage resources and schedule jobs.
 
 <h3> Job Types </h3>
 
-- **Batch Job** – Runs a scripted job automatically from start to finish without user intervention. Ideal for long-running production tasks.
-- **Interactive Job** – Provides a live shell session on compute nodes for experimentation and debugging. Useful for testing and planning batch jobs.  
+- **Batch Job** 鈥� Runs a scripted job automatically from start to finish without user intervention. Ideal for long-running production tasks.
+- **Interactive Job** 鈥� Provides a live shell session on compute nodes for experimentation and debugging. Useful for testing and planning batch jobs.  
 
 All jobs enter a **queue** while waiting for resources.
 
@@ -130,6 +130,7 @@ python3 myprogram.py
 	#PBS -l walltime=12:00:00
 	```
 
+
 	Sets the maximum run time to 12 hours. See the Walltime section below for more details.
 
 	```bash
@@ -173,6 +174,84 @@ qsub myjob.pbs
 ```bash
 qstat job_id (e.g., qstat 6787878)
 ```
+
+## Requesting GPUs in Your Jobs
+
+Many applications on Katana can make use of GPUs for faster computation.  
+You can request GPUs in both **interactive** and **batch** jobs by adding the `ngpus` resource.
+
+### Basic GPU Request
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1
+```
+This requests:
+- 1 GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don't specify `ngpus`, the default is `ngpus=0` (no GPU).
+
+---
+
+### Requesting a Specific GPU Model
+Different Katana nodes have different GPU models available (e.g. V100, A100).  
+You can check available models with:
+
+```bash
+pbsnodes -av | grep gpu_model
+```
+
+Once you know which models exist, you can request a specific one like this:
+
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1:gpu_model=A100
+```
+
+This example requests:
+- 1 **A100** GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don't specify `gpu_model`, the scheduler will assign **any available GPU**.
+
+## Requesting GPUs in Your Jobs
+
+Many applications on Katana can make use of GPUs for faster computation.  
+You can request GPUs in both **interactive** and **batch** jobs by adding the `ngpus` resource.
+
+### Basic GPU Request
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1
+```
+This requests:
+- 1 GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don't specify `ngpus`, the default is `ngpus=0` (no GPU).
+
+---
+
+### Requesting a Specific GPU Model
+Different Katana nodes have different GPU models available (e.g. V100, A100).  
+You can check available models with:
+
+```bash
+pbsnodes -av | grep gpu_model
+```
+
+Once you know which models exist, you can request a specific one like this:
+
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1:gpu_model=A100
+```
+
+This example requests:
+- 1 **A100** GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don't specify `gpu_model`, the scheduler will assign **any available GPU**.
 
 <<<<<<< Updated upstream
 =======
@@ -220,7 +299,7 @@ If you don't specify `gpu_model`, the scheduler will assign **any available GPU*
 
 ## Interactive Jobs (qsub -I)
 
-Interactive jobs let you run commands directly on Katana’s compute nodes (not the login node). This is useful when:
+Interactive jobs let you run commands directly on Katana鈥檚 compute nodes (not the login node). This is useful when:
 
 - You need to test software before creating a batch script.
 - You want to debug or profile code in a live environment.
@@ -254,9 +333,9 @@ Once your session starts, you will be logged into a compute node. You can run co
 Walltime is the maximum amount of real time that your job is allowed to run on the cluster. It is requested when you submit a job and is used by the scheduler to plan resources.
 
 - Walltime is specified in hours, minutes, and seconds, the default walltime is 1 hour if not specified in script.
-- If your job runs longer than the walltime, it will be terminated automatically, even if it hasn’t finished.
+- If your job runs longer than the walltime, it will be terminated automatically, even if it hasn鈥檛 finished.
 - Walltime affects which queues your job can be scheduled on. Shorter walltime jobs usually start faster, while longer jobs may only be able to run on specific nodes.
-- Always estimate your job’s runtime carefully. If unsure, it’s safer to slightly overestimate but not excessively, as very long walltime requests may reduce scheduling priority.
+- Always estimate your job鈥檚 runtime carefully. If unsure, it鈥檚 safer to slightly overestimate but not excessively, as very long walltime requests may reduce scheduling priority.
 - For long workflows, consider splitting tasks into multiple jobs to fit within walltime limits.
 
 ---
@@ -308,8 +387,8 @@ Typical job queue limit cut-offs are shown below. **The walltime is what determi
 
 ## Restech GitHub Repositories
 
-- [Restech-HPC](https://github.com/unsw-edu-au/Restech-HPC/tree/master/hpc-examples) – Example Katana scripts  
-- [UNSW-Data-Archive](https://github.com/unsw-edu-au/UNSW-Data-Archive) – Upload/download scripts  
-- [UNSW-eNotebook-LabArchives](https://github.com/unsw-edu-au/UNSW-eNotebook-LabArchives) – LabArchives widgets
+- [Restech-HPC](https://github.com/unsw-edu-au/Restech-HPC/tree/master/hpc-examples) 鈥� Example Katana scripts  
+- [UNSW-Data-Archive](https://github.com/unsw-edu-au/UNSW-Data-Archive) 鈥� Upload/download scripts  
+- [UNSW-eNotebook-LabArchives](https://github.com/unsw-edu-au/UNSW-eNotebook-LabArchives) 鈥� LabArchives widgets
 
 ---
