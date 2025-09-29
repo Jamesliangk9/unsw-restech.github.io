@@ -9,7 +9,7 @@ Katana is a High Performance Computing (HPC) cluster. It allows users to run com
   <figcaption>Simple HPC Architecture</figcaption>
 </figure>
 
-** Warning:** Do not run computationally intensive processes on **login nodes**; use **compute nodes** instead.
+**⚠ Warning:** Do not run computationally intensive processes on **login nodes**; use **compute nodes** instead.
 
 Jobs are submitted from the login node, which delivers them to the **Head Node** for job and resource management. Once resources are allocated, the job will run on one or more compute nodes.
 
@@ -17,8 +17,8 @@ Katana uses OpenPBS to manage resources and schedule jobs.
 
 ### Job Types
 
-- **Batch Job**  Runs a scripted job automatically from start to finish without user intervention. Ideal for long-running production tasks.
-- **Interactive Job**  Provides a live shell session on compute nodes for experimentation and debugging. Useful for testing and planning batch jobs.  
+- **Batch Job** – Runs a scripted job automatically from start to finish without user intervention. Ideal for long-running production tasks.
+- **Interactive Job** – Provides a live shell session on compute nodes for experimentation and debugging. Useful for testing and planning batch jobs.  
 
 All jobs enter a **queue** while waiting for resources.
 
@@ -305,8 +305,8 @@ Typical job queue limit cut-offs are shown below. **The walltime is what determi
 
 ## Restech GitHub Repositories
 
-- [Restech-HPC](https://github.com/unsw-edu-au/Restech-HPC/tree/master/hpc-examples) Example Katana scripts  
-- [UNSW-Data-Archive](https://github.com/unsw-edu-au/UNSW-Data-Archive) Upload/download scripts  
-- [UNSW-eNotebook-LabArchives](https://github.com/unsw-edu-au/UNSW-eNotebook-LabArchives) LabArchives widgets
+- [Restech-HPC](https://github.com/unsw-edu-au/Restech-HPC/tree/master/hpc-examples) – Example Katana scripts  
+- [UNSW-Data-Archive](https://github.com/unsw-edu-au/UNSW-Data-Archive) – Upload/download scripts  
+- [UNSW-eNotebook-LabArchives](https://github.com/unsw-edu-au/UNSW-eNotebook-LabArchives) – LabArchives widgets
 
 ---
