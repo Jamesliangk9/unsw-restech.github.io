@@ -130,6 +130,7 @@ python3 myprogram.py
 	#PBS -l walltime=12:00:00
 	```
 
+
 	Sets the maximum run time to 12 hours. See the Walltime section below for more details.
 
 	```bash
@@ -173,6 +174,45 @@ qsub myjob.pbs
 ```bash
 qstat job_id (e.g., qstat 6787878)
 ```
+
+## Requesting GPUs in Your Jobs
+
+Many applications on Katana can make use of GPUs for faster computation.  
+You can request GPUs in both **interactive** and **batch** jobs by adding the `ngpus` resource.
+
+### Basic GPU Request
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1
+```
+This requests:
+- 1 GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don't specify `ngpus`, the default is `ngpus=0` (no GPU).
+
+---
+
+### Requesting a Specific GPU Model
+Different Katana nodes have different GPU models available (e.g. V100, A100).  
+You can check available models with:
+
+```bash
+pbsnodes -av | grep gpu_model
+```
+
+Once you know which models exist, you can request a specific one like this:
+
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1:gpu_model=A100
+```
+
+This example requests:
+- 1 **A100** GPU  
+- 2 CPU cores  
+- 8 GB of memory  
+
+If you don't specify `gpu_model`, the scheduler will assign **any available GPU**.
 
 ---
 
