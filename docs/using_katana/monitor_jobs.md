@@ -4,10 +4,16 @@
 
 When you submit a job to Katana, it is placed in a queue and handled by the scheduler. The scheduler decides when and where your job will run based on several factors:
 
-- Are there enough available resources? (CPUs, memory, GPUs, walltime slots)
-- How long is the job’s requested **walltime**?
-- How many resources has this user using and used in the past?
-- How long has the job already been waiting in the queue?
+- Available resources: Are there enough free CPUs, memory, GPUs, and walltime slots to run your job? Hence, if the system is busy or
+resources are limited, your job may need to wait until enough become free.
+- Requested walltime: Jobs asking for a shorter runtime are often easier to fit in and may start sooner. It can be difficult to estimate walltime accurately, but you test your code, it will be more familiar
+- Fairness: The scheduler also considers how many resources you are currently using. If you are already running many jobs or using a large
+amount of resources, your new jobs may need to wait longer so that others also get fair access.
+- Queue waiting time: Jobs that have been waiting longer gain priority over newer submissions. This usually happens when a job remains
+in the queue for a long time. The scheduler increments the job's priority over time, ensuring that older jobs eventually move ahead in the queue and get scheduled.
+
+In short, the scheduler tries to balance efficiency (keeping the system busy) with fairness (making sure everyone gets a fair share of
+resources).
 
 Understanding these factors can help you make better choices about resource requests and job planning.
 
@@ -21,7 +27,7 @@ Once your jobs are in the queue or running, you’ll want to monitor and manage 
 - **Deleting jobs you no longer need**
 - **Altering queued jobs (e.g. reducing walltime)**
 
-Katana uses PBS commands for these.
+On Katana, these taskes are manged using PBS commmands as follows:
 
 ### Checking Job Status with `qstat`
 
@@ -31,9 +37,9 @@ Katana uses PBS commands for these.
 		<img src="../../assets/qstat.png" style="max-width: 100%; height: 150px;">
 </div>
 
-### Show Only Your Jobs
+#### Show Only Your Jobs
 
-Use the `-u` option with your username or `$USER` environment variable(Which is automatically set to your username/zID):
+Use the `-u` option with your username or `$USER` environment variable (Which is automatically set to your username/zID):
 
 <div style="flex: 1; margin-right: 20px;">
 		<img src="../../assets/qstat_USER.png" style="max-width: 100%; height: 50px;">
@@ -49,6 +55,12 @@ In the output, you can see the job ID, name, user, time used, and status. The st
 | **Q** | Queued (waiting to start)       |
 | **R** | Running                         |
 | **C** | Completed (finished or stopped) |
+| **H** | Held (paused by user or admin)  |
+| **E** | Exiting (finishing up)          |
+| **S** | Suspended (temporarily stopped) |
+| **B** | Job arrays only: job array is begun, meaning that at least one subjob has started |
+| **F** | Job is finished. Job has completed execution, job failed, or job was deleted. |
+| **M** | Job is moved to another server. |
 
 
 The `-s` option adds more detail such as which node the job is on:
@@ -74,35 +86,29 @@ If you want to see job status for a completed job, use the `-x` or `-H` option w
 
 ### Deleting Jobs with `qdel`
 
-If you need to cancel a job, use `qdel` followed by the job ID:
+If you need to delete a job, use `qdel` followed by the job ID:
 
 ```bash
 [z1234567@katana2 src]$ qdel 315252
-```
-
-For array jobs, you must escape the square brackets:  
-```bash
-qdel 12345\[ \]
 ```
 
 ---
 
 ### Altering Jobs with `qalter`
 
-You can modify jobs **before they start running**. Once a job begins, only `cputime`, `walltime`, and `run_count` can be reduced.
-You might increase CPUs if your program is multi-threaded, or reduce memory if you requested too much and want your job to start faster.
+If there is a need to reduce resource requests (e.g. walltime, memory) for a job that is still in the queue (not yet running), you can use `qalter`. For example, to change the number of CPUs and memory:
 
 Example:  
 ```bash
-# Submit a job with 2 CPUs and 128MB memory
-[z1234567@katana2 src]$ qsub -l select=1:ncpus=2:mem=128mb job.pbs
+# Submit a job with 2 CPUs and 128GB memory
+[z1234567@katana2 src]$ qsub -l select=1:ncpus=2:mem=64gb job.pbs
 315259.kman.restech.unsw.edu.au
 
-# Change it to 4 CPUs and 512MB memory while queued
-[z1234567@katana2 src]$ qalter -l select=1:ncpus=4:mem=512mb 315259
+# Change it to 4 CPUs and 128GB memory while queued
+[z1234567@katana2 src]$ qalter -l select=1:ncpus=4:mem=128gb 315259
 ```
 
-Use `qstat -f` again to confirm changes.
+Use `qstat -xf [JobID]` again to confirm changes.
 
 ---
 
@@ -151,12 +157,13 @@ The `pstat` command gives an overview of all compute nodes and what jobs are run
 
 ```bash
 [z1234567@katana2 src]$ pstat
-k001  normal-mrcbio           free          12/44   200/1007gb  314911*12
-k002  normal-mrcbio           free          40/44    56/ 377gb  314954*40
-k003  normal-mrcbio           free          40/44   375/ 377gb  314081*40
-k004  normal-mrcbio           free          40/44    62/ 377gb  314471*40
+Node  Queue                  State        CPUs   Memory
+k001  normal-mrcbio           free          12/44   200/1007gb
+k002  normal-mrcbio           free          40/44    56/ 377gb
+k003  normal-mrcbio           free          40/44   375/ 377gb
+k004  normal-mrcbio           free          40/44    62/ 377gb
 k005  normal-ccrc             free           0/32     0/ 187gb
-k006  normal-physics          job-busy      32/32   180/ 187gb  282533*32
+k006  normal-physics          job-busy      32/32   180/ 187gb
 ...
 ```
 
