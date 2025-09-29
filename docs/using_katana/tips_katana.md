@@ -21,7 +21,11 @@ If your batch jobs are the same except for a change in file name or another vari
 
 # Other Advanced Usages
 
+<<<<<<< Updated upstream
 As well as the information presented here, examples are available in the [Restech HPC Github repository](../using_katana/running_jobs/#restech-github-repositories)
+=======
+<h3> Array Jobs </h3>
+>>>>>>> Stashed changes
 
 ## Array Jobs
 
@@ -58,7 +62,75 @@ There are some more examples of array jobs including how to group your computati
 
 If your batch job can be split into multiple steps you may want to split one big job up into a number of smaller jobs. There are a number of reasons to spend the time to implement this.
 
+<<<<<<< Updated upstream
 1. If your large job runs for over 200 hours, it won't finish on Katana.
 2. If your job has multiple steps which use different amounts of resources at each step. If you have a pipeline that takes 50 hours to run and needs 200GB of memory for an hour, but only 50GB the rest of the time, then the memory is sitting idle. 
 3. Katana has prioritisations based on how many resources any one user uses. If you ask for 200GB of memory, this will be accounted for when working out your next job's priority.
 4. Because there are many more resources for 12 hour jobs, seven or eight 12 hour jobs will often finish well before a single 100 hour job even starts. 
+=======
+- Instead of running one massive job, it is often better to split it into smaller ones. This has several advantages:
+
+- Maximum runtime limit: Katana jobs cannot exceed 200 hours. Splitting ensures completion.
+
+- Different resource needs: If parts of your pipeline need different resources, splitting prevents waste. For example, if only one step requires 200GB of memory, you shouldn't reserve that much for the whole run.
+
+- Fair-share scheduling: Katana prioritises users based on their resource usage. Requesting excessive memory may lower your future job priority.
+
+- Shorter queue times: Smaller jobs (e.g., seven 12-hour jobs) often run faster overall than one very long job.
+
+- Breaking down your workload into smaller jobs makes better use of Katana's scheduling system and usually leads to faster completion times.
+
+## Accessing the Grace Hopper (GH200) GPU Node on Katana
+
+Katana includes a Grace Hopper (GH200) node, which combines an ARM-based CPU with a Hopper-generation GPU. This node offers much higher performance than Katana’s older GPU nodes (V100 and A100) and is designed for experimental, high-end workloads.
+
+<h3> Key Characteristics of the GH200 Node </h3>
+- **CPU**: 72-core ARM CPU (architecture: aarch64) with 480 GB memory.
+- **GPU**: One Hopper GPU with 96 GB HBM3 memory.
+- **Memory bandwidth**: The CPU and GPU are linked with 900 GB/s NVLink, allowing them to share memory. This means you can run GPU jobs requiring more than 96 GB memory, because the GPU can access CPU memory directly.
+- **Architecture**: The ARM CPU architecture is different from the rest of Katana (x86_64). Regular Katana binaries and modules will not work here.
+
+<h3> Software Considerations </h3>
+- Use the default GNU compiler and CUDA libraries available on the node.
+- Install your own Python environment using Conda for ARM (aarch64), since many precompiled packages won’t run on ARM.
+- Jobs here are best suited for Python-based machine learning, deep learning, and experimental HPC applications.
+
+<h3> Submitting Jobs to the GH200 Node </h3>
+
+To request the GH200 node, you must specify the cpu_arch=aarch64 resource in your job submission. For example:
+
+Direct command line submission:
+```bash
+[z1234567@katana ~]$ qsub -l select=1:cpu_arch=aarch64:ngpus=1:ncpus=72:mem=480gb myjob.pbs
+1238.kman.restech.unsw.edu.au
+```
+
+Or inside your job script(e.g., myjob.pbs):
+```bash
+#PBS -l select=1:cpu_arch=aarch64:ngpus=1:ncpus=72:mem=480gb
+```
+
+<h3> When to Use the GH200 Node </h3>
+
+- If your job requires very high GPU memory bandwidth or unified CPU–GPU memory.
+- If you are experimenting with next-generation AI/ML workloads.
+- If your application can be built or run on ARM (aarch64) architecture.
+
+## SSH KeepAlive
+
+To stop your connection disconnecting after some idle time, you can send some empty packets to keep your session alive. You want to change the
+frequency of these packets from 0 (none) to a small time interval, say 60 seconds. The configuration differs depending on the SSH client used.
+
+On PuTTy: Category -> Connection -> "Seconds between keepalives"
+
+On MobaXterm: Settings -> Configuration -> SSH -> SSH keepalive 
+
+On Linux and WSL you send keepalive packets for all servers by editing ~/.ssh/config and adding the lines 
+
+``` bash
+
+   Host *
+      ServerAliveInterval 60
+
+```
+>>>>>>> Stashed changes

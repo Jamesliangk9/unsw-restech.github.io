@@ -11,6 +11,7 @@ When deciding which jobs to run, the scheduler takes the following details into 
 
 You can get an overview of the compute nodes and a list of all the jobs running on each node using `pstat`
 
+<<<<<<< Updated upstream
 ``` bash
 [z1234567@katana2 src]$ pstat
 k001  normal-mrcbio           free          12/44   200/1007gb  314911*12
@@ -26,6 +27,72 @@ k010  normal-physics          free           0/32     0/ 187gb
 ```
 
 To get information about a particular node, you can use `pbsnodes` but on its own it is a firehose. Using it with a particular node name is more effective:
+=======
+In short, the scheduler tries to balance efficiency (keeping the system busy) with fairness (making sure everyone gets a fair share of
+resources).
+
+Understanding these factors can help you make better choices about resource requests and job planning.
+
+---
+
+## Managing Your Own Jobs
+
+Once your jobs are in the queue or running, you’ll want to monitor and manage them. Common tasks include:
+
+- **Checking job status**
+- **Deleting jobs you no longer need**
+- **Altering queued jobs (e.g. reducing walltime)**
+
+On Katana, these taskes are manged using PBS commmands as follows:
+
+<h3> Checking Job Status with `qstat` </h3>
+
+`qstat` shows the jobs currently in the queue. Without options it prints **all jobs**, so you may want to filter.
+
+<div style="flex: 1; margin-right: 20px;">
+		<img src="../../assets/qstat.png" style="max-width: 100%; height: 150px;">
+</div>
+
+<h4> Show Only Your Jobs </h4>
+
+Use the `-u` option with your username or `$USER` environment variable (Which is automatically set to your username/zID):
+
+<div style="flex: 1; margin-right: 20px;">
+		<img src="../../assets/qstat_USER.png" style="max-width: 100%; height: 50px;">
+</div>
+<div style="flex: 1; margin-right: 20px;">
+		<img src="../../assets/qstat_job.png" style="max-width: 100%; height: 50px;">
+</div>
+
+In the output, you can see the job ID, name, user, time used, and status. The status codes are:
+
+| State | Meaning                         |
+| ----- | ------------------------------- |
+| **Q** | Queued (waiting to start)       |
+| **R** | Running                         |
+| **C** | Completed (finished or stopped) |
+| **H** | Held (paused by user or admin)  |
+| **E** | Exiting (finishing up)          |
+| **S** | Suspended (temporarily stopped) |
+| **B** | Job arrays only: job array is begun, meaning that at least one subjob has started |
+| **F** | Job is finished. Job has completed execution, job failed, or job was deleted. |
+| **M** | Job is moved to another server. |
+
+
+The `-s` option adds more detail such as which node the job is on:
+```bash
+[z1234567@katana2 src]$ qstat -su $USER
+```
+
+<h3> Get Full Details </h3>
+```bash
+[z1234567@katana2 src]$ qstat -f 6900507
+```
+<div style="flex: 1; margin-right: 20px;">
+		<img src="../../assets/qstat_-f.png" style="max-width: 100%; height: 700px;">
+</div>
+This is useful for debugging and verifying resource requests.
+>>>>>>> Stashed changes
 
 ``` bash
 [z1234567@katana2 src]$ pbsnodes k254
@@ -64,7 +131,11 @@ k254
 
 ## Managing Jobs on Katana
 
+<<<<<<< Updated upstream
 Once you have jobs running, you will want visibility of the system so that you can manage them - delete jobs, change jobs, check that jobs are still running.
+=======
+<h3> Deleting Jobs with `qdel` </h3>
+>>>>>>> Stashed changes
 
 There are a couple of easy to use commands that help with this process.
 
@@ -202,7 +273,37 @@ HTML heading tags are used instead of '###' otherwise the right sidebar index br
 
 As soon as your job finishes, PBS produces job statistics along with a summary of your job. This summary appears as follows (replace ```4638435.kman.restech.unsw.edu.au.OU``` for your output file; the steps for retrieving the file name are outlined below):
 ```bash
+<<<<<<< Updated upstream
 z123456@katana2:~ $ cat 4638435.kman.restech.unsw.edu.au.OU
+=======
+[z1234567@katana2 src]$ qdel 315252
+```
+
+---
+
+<h3> Altering Jobs with `qalter` </h3>
+
+If there is a need to reduce resource requests (e.g. walltime, memory) for a job that is still in the queue (not yet running), you can use `qalter`. For example, to change the number of CPUs and memory:
+
+Example:  
+```bash
+# Submit a job with 2 CPUs and 128GB memory
+[z1234567@katana2 src]$ qsub -l select=1:ncpus=2:mem=64gb job.pbs
+315259.kman.restech.unsw.edu.au
+
+# Change it to 4 CPUs and 128GB memory while queued
+[z1234567@katana2 src]$ qalter -l select=1:ncpus=4:mem=128gb 315259
+```
+
+---
+
+## Viewing Job Statistics After Completion
+
+When a job finishes, PBS appends a resource usage summary to your output file. The output file contains both your program’s results (e.g. print statements) and PBS system information about how much memory and time your job actually used. For example:
+
+```bash
+[z1234567@katana2 src]$ cat 4638435.kman.restech.unsw.edu.au.OU
+>>>>>>> Stashed changes
 
 ================================================================================
                      Resource Usage on 27/07/2023 15:43:37
@@ -287,3 +388,65 @@ Job Id: 4686875.kman.restech.unsw.edu.au
     Submit_Host = katana2
 ```
 
+<<<<<<< Updated upstream
+=======
+For interactive jobs, the output file will have a name like `4638435.kman.restech.unsw.edu.au.OU` in the directory you started the job.
+
+---
+
+## Checking Nodes and Jobs on the Cluster
+
+<h3> View All Nodes with `pstat` </h3>
+
+The `pstat` command gives an overview of all compute nodes and what jobs are running on them:
+
+```bash
+[z1234567@katana2 src]$ pstat
+Node  Group                  State        CPUs   Memory
+k001  normal-mrcbio           free          12/44   200/1007gb
+k002  normal-mrcbio           free          40/44    56/ 377gb
+k003  normal-mrcbio           free          40/44   375/ 377gb
+k004  normal-mrcbio           free          40/44    62/ 377gb
+k005  normal-ccrc             free           0/32     0/ 187gb
+k006  normal-physics          job-busy      32/32   180/ 187gb
+...
+```
+
+In each row you can see the **node ID**, queue name, whether it’s free or busy, how many CPUs are in use, and memory usage.
+
+<h3> Detailed Info About One Node with `pbsnodes` </h3>
+
+The `pbsnodes` command shows detailed information about nodes. Without arguments it can be overwhelming. Use it with a node name to narrow results:
+
+```bash
+[z1234567@katana2 src]$ pbsnodes k254
+k254
+    Mom = k254
+    ntype = PBS
+    state = job-busy
+    pcpus = 32
+    jobs = 313284.kman.restech.unsw.edu.au/0, 313284.kman.restech.unsw.edu.au/1
+    resources_available.arch = linux
+    resources_available.cputype = skylake-avx512
+    resources_available.mem = 196396032kb
+    resources_assigned.ncpus = 32
+    resources_assigned.mem = 50331648kb
+    sharing = default_shared
+    last_state_change_time = Thu Apr 30 08:06:23 2020
+```
+This lets you check CPU type, available memory, assigned jobs, and more.
+
+---
+
+**Summary:**  
+Typical workflow:
+
+- Submit job → qsub myjob.pbs
+
+- Check status → qstat -u $USER
+
+- If needed, adjust → qalter … or cancel → qdel JOBID
+
+- After it finishes, check output file → cat jobid.OU  
+
+>>>>>>> Stashed changes
