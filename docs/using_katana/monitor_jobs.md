@@ -108,8 +108,6 @@ Example:
 [z1234567@katana2 src]$ qalter -l select=1:ncpus=4:mem=128gb 315259
 ```
 
-Use `qstat -xf [JobID]` again to confirm changes.
-
 ---
 
 ## Viewing Job Statistics After Completion
@@ -157,7 +155,7 @@ The `pstat` command gives an overview of all compute nodes and what jobs are run
 
 ```bash
 [z1234567@katana2 src]$ pstat
-Node  Queue                  State        CPUs   Memory
+Node  Group                  State        CPUs   Memory
 k001  normal-mrcbio           free          12/44   200/1007gb
 k002  normal-mrcbio           free          40/44    56/ 377gb
 k003  normal-mrcbio           free          40/44   375/ 377gb
