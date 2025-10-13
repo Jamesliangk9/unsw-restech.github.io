@@ -15,14 +15,14 @@ Jobs are submitted from the login node, which delivers them to the **Head Node**
 
 Katana uses OpenPBS to manage resources and schedule jobs.
 
-### Job Types
+<h3> Job Types </h3>
 
 - **Batch Job** – Runs a scripted job automatically from start to finish without user intervention. Ideal for long-running production tasks.
 - **Interactive Job** – Provides a live shell session on compute nodes for experimentation and debugging. Useful for testing and planning batch jobs.  
 
 All jobs enter a **queue** while waiting for resources.
 
-### Resources
+<h3> Resources </h3>
 
 Main resources requested by jobs:
 
@@ -69,7 +69,7 @@ Save this file and exit nano (CTRL+S, ENTER, CTRL+X).
 
 A batch job is a script that runs autonomously on a compute node. The script specifies resources and commands to run. Now you will create a job script to run the program you created.
 
-### Step 1: Create a Job Script File
+<h3> Step 1: Create a Job Script File </h3>
 
 ```bash
 # Create a new file called myjob.pbs
@@ -160,7 +160,7 @@ python3 myprogram.py
 
 - Press `CTRL+S` to save and `CTRL+X` to exit `nano`.
 
-### Step 2: Submit the Batch Job
+<h3> Step 2: Submit the Batch Job </h3>
 
 ```bash
 qsub myjob.pbs
@@ -180,7 +180,7 @@ qstat job_id (e.g., qstat 6787878)
 Many applications on Katana can make use of GPUs for faster computation.  
 You can request GPUs in both **interactive** and **batch** jobs by adding the `ngpus` resource.
 
-### Basic GPU Request
+<h3> Basic GPU Request </h3>
 ```bash
 qsub -I -l select=1:ncpus=2:mem=8gb:ngpus=1
 ```
@@ -193,7 +193,7 @@ If you don't specify `ngpus`, the default is `ngpus=0` (no GPU).
 
 ---
 
-### Requesting a Specific GPU Model
+<h3> Requesting a Specific GPU Model </h3>
 Different Katana nodes have different GPU models available (e.g. V100, A100).  
 You can check available models with:
 
@@ -228,7 +228,7 @@ Interactive jobs let you run commands directly on Katana’s compute nodes (not 
 	Interactive jobs are not suitable for long-running tasks. Use batch jobs for production workloads.
 	Do not run heavy computations on the login node. Always request an interactive session so your work runs on compute resources.
 
-### Starting an Interactive Session
+<h3> Starting an Interactive Session </h3>
 
 To start an interactive job, use qsub -I with resource requests. For example:
 

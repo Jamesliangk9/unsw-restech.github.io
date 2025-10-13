@@ -24,7 +24,7 @@ Batch jobs let you submit many jobs at once, which then run and finish without f
 
 ## Other Advanced Usage
 
-### Array Jobs
+<h3> Array Jobs </h3>
 
 Many computational tasks require repeating the same process with small variations, such as different input files or random seeds. Array jobs allow you to handle these efficiently by spawning multiple sub-jobs from a single script. Each sub-job is distinguished by the special environment variable `$PBS_ARRAY_INDEX`.
 
@@ -66,18 +66,18 @@ cd ${PBS_O_WORKDIR}
 
 Katana includes a Grace Hopper (GH200) node, which combines an ARM-based CPU with a Hopper-generation GPU. This node offers much higher performance than Katana’s older GPU nodes (V100 and A100) and is designed for experimental, high-end workloads.
 
-### Key Characteristics of the GH200 Node
+<h3> Key Characteristics of the GH200 Node </h3>
 - **CPU**: 72-core ARM CPU (architecture: aarch64) with 480 GB memory.
 - **GPU**: One Hopper GPU with 96 GB HBM3 memory.
 - **Memory bandwidth**: The CPU and GPU are linked with 900 GB/s NVLink, allowing them to share memory. This means you can run GPU jobs requiring more than 96 GB memory, because the GPU can access CPU memory directly.
 - **Architecture**: The ARM CPU architecture is different from the rest of Katana (x86_64). Regular Katana binaries and modules will not work here.
 
-### Software Considerations
+<h3> Software Considerations </h3>
 - Use the default GNU compiler and CUDA libraries available on the node.
 - Install your own Python environment using Conda for ARM (aarch64), since many precompiled packages won’t run on ARM.
 - Jobs here are best suited for Python-based machine learning, deep learning, and experimental HPC applications.
 
-### Submitting Jobs to the GH200 Node
+<h3> Submitting Jobs to the GH200 Node </h3>
 
 To request the GH200 node, you must specify the cpu_arch=aarch64 resource in your job submission. For example:
 
@@ -92,7 +92,7 @@ Or inside your job script(e.g., myjob.pbs):
 #PBS -l select=1:cpu_arch=aarch64:ngpus=1:ncpus=72:mem=480gb
 ```
 
-### When to Use the GH200 Node
+<h3> When to Use the GH200 Node </h3>
 
 - If your job requires very high GPU memory bandwidth or unified CPU–GPU memory.
 - If you are experimenting with next-generation AI/ML workloads.
