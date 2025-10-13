@@ -15,7 +15,7 @@ Information on how to request a Katana account can be found with the
 </figure>
 
 
-## Are you looking for....
+<h2> Are you looking for.... </h2>
 
 <div style="display: flex; justify-content: space-around;">
     <div style="flex: 1; margin: 0 10px;">
@@ -45,7 +45,7 @@ Information on how to request a Katana account can be found with the
 
 
 
-## **Katana Terms of Use**
+<h2> **Katana Terms of Use** </h2>
 
 Any use of Katana is covered by the [Conditions of Use - UNSW ICT Resources](https://www.it.unsw.edu.au/students/policies/agree_to_rules.html). 
 
