@@ -54,25 +54,55 @@ Choose a method depending on your local machine and preference:
 
 ## Command-line Examples (rsync) — Recommended
 
-> **Important:** Use `rsync -avh` for readable progress and preserving attributes. The trailing colon `:` after the username/host matters when copying *to* your home on KDM.
+> **Important:** Use `rsync -avh` for readable progress and to preserve file attributes.  
+> The trailing colon `:` after the username/host is crucial when copying *to* your home on KDM — it tells `rsync` that the target is a **remote directory**, not a local file.
+
+---
+
+<h3> Understanding Local and Remote Paths </h3>
+
+Before using `rsync`, you need to correctly define your **local path** and **remote path**.
+
+- **Local path:** the directory or file on your own computer.  
+  Examples:  
+  - `~/Documents/myproject/` (your project folder in your home directory)  
+  - `/mnt/data/results/output.csv` (an absolute path on Linux or WSL)  
+  - `C:/Users/James/Documents/myproject/` (on Windows with WSL or Git Bash)
+
+- **Remote path:** the location on the KDM server.  
+  - Home directory → `z1234567@kdm.restech.unsw.edu.au:`  
+  - Scratch directory → `z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567`
+
+Make sure the directory exists before running `rsync`. If it doesn’t, you can create it on KDM with `mkdir -p /srv/scratch/z1234567/myfolder`.
+
+---
 
 <h3> From my computer to Katana Home </h3>
-Copy local directory `/path/to/my-directory` to your Katana **home** on KDM:
+
+Copy your local directory `/path/to/my-directory` to your Katana **home** on KDM:
 
 ```bash
 rsync -avh /path/to/my-directory z1234567@kdm.restech.unsw.edu.au:
 ```
 
-The trailing `:` targets your remote **home** directory (e.g. `/home/z1234567`).
+The trailing `:` tells rsync to place files inside your remote **home directory** (e.g., `/home/z1234567`).
+
+---
 
 <h3> From my computer to Katana Scratch </h3>
-Copy local directory to your Katana **scratch** area:
+
+Copy your local directory to your Katana **scratch** area:
 
 ```bash
 rsync -avh /path/to/my-directory z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567
 ```
 
+The explicit path ensures your files go to the **scratch** storage instead of your home directory.
+
+---
+
 <h3> From Katana (KDM) to my computer </h3>
+
 If remote data is in your **home** on KDM:
 
 ```bash
@@ -85,17 +115,36 @@ If remote data is in **scratch** on KDM:
 rsync -avh z1234567@kdm.restech.unsw.edu.au:/srv/scratch/my-remote-results /home/me/
 ```
 
+In these examples, `/home/me/` is the destination on your **local** computer.
+
 ---
 
 ## Tips for Large/Long Transfers
-- Use `tmux` or `screen` on KDM to keep long-running rsync sessions alive if your SSH client disconnects.  
-- Use `--partial` and `--progress` (or `-P`) with rsync when transfers may be interrupted. Example:
 
-```bash
-rsync -avhP --partial /path/to/largefile z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567/
-```
+- **Keep rsync running** even if your SSH disconnects:  
+  Use `tmux` or `screen` on KDM to protect long sessions.  
 
-- If you have extremely large datasets, consider compressing them before transfer (`tar -czf`) and then extract on KDM to reduce the number of small file operations.
+- **Resume interrupted transfers:**  
+  Use `--partial` and `--progress` (or `-P`) so rsync doesn’t restart from scratch.  
+  Example:
+
+  ```bash
+  rsync -avhP --partial /path/to/largefile z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567/
+  ```
+
+- **For very large datasets:**  
+  Compress the folder before transfer to reduce small-file overhead:
+
+  ```bash
+  tar -czf mydata.tar.gz /path/to/my-large-folder
+  rsync -avh mydata.tar.gz z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567/
+  ```
+
+  Then, extract it on KDM:
+
+  ```bash
+  tar -xzf mydata.tar.gz
+  ```
 
 ---
 

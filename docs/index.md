@@ -45,7 +45,7 @@ Information on how to request a Katana account can be found with the
 
 
 
-<h2> **Katana Terms of Use** </h2>
+<h2> Katana Terms of Use </h2>
 
 Any use of Katana is covered by the [Conditions of Use - UNSW ICT Resources](https://www.it.unsw.edu.au/students/policies/agree_to_rules.html). 
 

@@ -1,7 +1,7 @@
 title: Data Archive
 ## How to Use the UNSW Data Archive
 
-The [UNSW Data Archive](http://www.dataarchive.unsw.edu.au/) is the university's long-term research data storage platform. It provides free, safe, and secure storage for UNSW researchers - ensuring your data is preserved well beyond the end of a project.
+The [UNSW Data Archive](http://www.dataarchive.unsw.edu.au/) is the university's long-term research data storage platform. It provides free, safe, and secure storage for UNSW researchers, ensuring your data is preserved well beyond the end of a project.
 
 To help researchers transfer data easily, the **Katana Data Mover (KDM)** includes a built-in script for copying files directly from Katana to the Data Archive.
 
@@ -47,7 +47,7 @@ Before transferring data, you must create a configuration file that stores your 
     [z1234567@kdm ~]$ get-config-file
     ```
 
-    This command creates a file named `config.cfg` in your current directory, which contains the basic settings for connecting to the Data Archive.
+    This command creates a file named `config.cfg` in your current directory, which contains the basic settings for connecting to the Data Archive. (The command may not work if you haven't created a RDMP yet.)
 
 2. **Generate an authentication token**
 
@@ -59,7 +59,7 @@ Before transferring data, you must create a configuration file that stores your 
     /UNSW_RDS/Hxxxxxx
     ```
 
-    This namespace can be found in your Data Archive welcome email.
+    This namespace can be found in your Data Archive welcome email which is the Project ID for your RDMP.
 
 3. **Edit your configuration file**
 
@@ -92,7 +92,7 @@ Once your configuration file is ready, you can start transferring data between K
 Use the `upload.sh` command to send data **to** the archive:
 
 ```bash
-upload.sh /path/to/your/local/directory /UNSW_RDS/D0000000/your/collection/name
+upload.sh C:/Users/User/Document/example/ /UNSW_RDS/D0000000/your/collection/example/
 ```
 
 This uploads the specified local directory to the given collection path in the Data Archive.
