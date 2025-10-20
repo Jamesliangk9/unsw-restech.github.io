@@ -92,7 +92,7 @@ Once your configuration file is ready, you can start transferring data between K
 Use the `upload.sh` command to send data **to** the archive:
 
 ```bash
-upload.sh C:/Users/User/Document/example/ /UNSW_RDS/D0000000/your/collection/example/
+upload.sh /path/to/your/local/directory /UNSW_RDS/D0000000/your/collection/example/
 ```
 
 This uploads the specified local directory to the given collection path in the Data Archive.
