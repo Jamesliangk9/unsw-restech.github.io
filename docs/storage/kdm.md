@@ -37,7 +37,7 @@ Choose a method depending on your local machine and preference:
 
 ---
 
-## Using GUI Clients (FileZilla / WinSCP)
+## Using GUI Clients (FileZilla / WinSCP) — Recommended
 
 <h3> FileZilla (quick steps) </h3>
 1. Install FileZilla (or WinSCP on Windows).  
@@ -52,7 +52,7 @@ Choose a method depending on your local machine and preference:
 
 ---
 
-## Command-line Examples (rsync) — Recommended
+## Command-line Examples (rsync)
 
 > **Important:** Use `rsync -avh` for readable progress and to preserve file attributes.  
 > The trailing colon `:` after the username/host is crucial when copying *to* your home on KDM — it tells `rsync` that the target is a **remote directory**, not a local file.
@@ -67,7 +67,7 @@ Before using `rsync`, you need to correctly define your **local path** and **rem
   Examples:  
   - `~/Documents/myproject/` (your project folder in your home directory)  
   - `/mnt/data/results/output.csv` (an absolute path on Linux or WSL)  
-  - `C:/Users/James/Documents/myproject/` (on Windows with WSL or Git Bash)
+  - `C:\Users\Me\Desktop\file.txt` (an absolute path on Windows)
 
 - **Remote path:** the location on the KDM server.  
   - Home directory → `z1234567@kdm.restech.unsw.edu.au:`  
@@ -78,6 +78,10 @@ Make sure the directory exists before running `rsync`. If it doesn’t, you can 
 ---
 
 <h3> From my computer to Katana Home </h3>
+
+!!! Note
+    When trying to copy files from your local machine to `kdm.restech.unsw.edu.au`, ensure using a new command line terminal (e.g., Command Prompt, PowerShell, Terminal, etc.) on your local machine. Do not run the rsync command from within an SSH session connected to kdm.restech.unsw.edu.au.
+
 
 Copy your local directory `/path/to/my-directory` to your Katana **home** on KDM:
 

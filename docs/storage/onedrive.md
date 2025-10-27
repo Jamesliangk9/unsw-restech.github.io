@@ -1,97 +1,102 @@
-title: OneDrive
+# OneDrive
 
 You can mount Microsoft's OneDrive on Katana.
 
-## OneDrive Background
+<h2> OneDrive Background </h2>
 
-We don't recommend researchers mount their OneDrive because the configuration process is not ideal. However, it is possible with the following method.
+We don't generally recommend researchers mount their OneDrive because the configuration process is not ideal, and RClone integration with OneDrive has **limitations** that UNSW support cannot assist with.  
+However, it is technically possible using the following method.
 
-`There are limitations to using RClone with OneDrive` that users will need to be 
-aware of and which the UNSW team cannot help with.
-
-
-Note: Mounting OneDrive locally will only work on the machine on which the `mount`
-command is run.
-    
 !!! note
-    Please mount OneDrive on Katana Data Mover, not the login nodes. 
+    Please mount OneDrive only on **Katana Data Mover** (zID@kdm.restech.unsw.edu.au), not on the login nodes.
 
-The configuration section will probably only need to run once, whereas the "how to mount" section will need to be run each time.
+Mounting OneDrive locally will only work on the machine where the `mount` command is executed.  
+The configuration part usually needs to be done once, whereas the "How to mount" step must be repeated each time you log in.
+
+---
 
 ## Prerequisites
 
-1. [OneDrive needs your consent](https://consenthelper.it.unsw.edu.au/consent?appId=c8800f43-7805-46c2-b8b2-1c55f3859a4c) to give rclone access to your files. 
-2. We can't guarantee or test if this works for researchers in Germany or 
-China. OneDrive has a different set up for Germany and China due to local laws 
-about data storage.
-3. You will need at least one empty directory for mounting. Restech recommends creating the directory ``/home/z1234567/OneDrive`` to mount OneDrive onto.
+1. [Grant OneDrive consent](https://consenthelper.it.unsw.edu.au/consent?appId=c8800f43-7805-46c2-b8b2-1c55f3859a4c) to allow RClone access to your files.  
+2. We cannot guarantee functionality for users in **Germany or China**, as OneDrive infrastructure there differs due to data regulations.  
+3. Create an empty directory to use as the mount point, for example:  
+   ```bash
+   mkdir -p /home/z1234567/OneDrive
+   ```
+
+---
 
 ## Configure RClone for OneDrive
-            
-1. Login to KDM and run:
 
-``` bash
+Log in to **KDM** and run:
+
+```bash
 [z1234567@kdm ~]$ rclone config
 ```
 
-You will be asked a set of questions. The short answers are:
+You will be guided through a setup wizard. The short answers are:
 
-1. new remote ('n')
-2. name ('OneDrive')
-3. storage type **Microsoft OneDrive** (**'26'** in rclone version 1.55.1)
-4. OAuth Client Id (Press Enter for the default)  
-5. OAuth Client Secret (Press Enter for the default)
-6. Choose national cloud region for OneDrive ("1. global")
-7. Edit advanced config? ("n")
-8. Remote config? ("n")
-9. *On a machine with rclone and a web browser* **(not kdm)**: Run the ``rclone authorize "onedrive" ...`` command and copy to the clipboard. 
-10. *Back to kdm:* Paste result: 
-11. Choose a number from below, or type in an existing value ("1. OneDrive Personal or Business")
-12. Chose drive to use: ("0")
-13. Is that okay? ("Y")
+1. **n** (for new remote)  
+2. Name: `OneDrive`  
+3. Storage type: **Microsoft OneDrive** (option **26** in rclone v1.55.1)  
+4. OAuth Client Id → *Press Enter for default*  
+5. OAuth Client Secret → *Press Enter for default*  
+6. Choose national cloud region → `"1. global"`  
+7. Edit advanced config? → `"n"`  
+8. Remote config? → `"n"`  
+9. On a **local machine** (not KDM), run the command displayed, e.g.  
+   ```bash
+   rclone authorize "onedrive"
+   ```  
+   Copy the output token.  
+10. Back in KDM, **paste the authorization token**.  
+11. Choose `"1. OneDrive Personal or Business"`  
+12. Choose drive `"0"`  
+13. Confirm with `"Y"`  
 
-You should then see something like this to which you should answer yes:
+Example output (press `y` to accept):
 
-``` bash
-   --------------------
-    [MS OneDrive]
-    type = onedrive
-    client_id = c8800f43-7805-46c2-b8b2-1c55f3859a4c
-    client_secret = SECRET
-    region = global
-    token = {"access_token":"eyJ0e...asdasd"}
-    drive_type = business
-    --------------------
-    y) Yes this is OK (default)
-    e) Edit this remote
-    d) Delete this remote
-    y/e/d> 
+```bash
+--------------------
+[MS OneDrive]
+type = onedrive
+client_id = c8800f43-7805-46c2-b8b2-1c55f3859a4c
+client_secret = SECRET
+region = global
+token = {"access_token":"eyJ0e...asdasd"}
+drive_type = business
+--------------------
+y) Yes this is OK (default)
+e) Edit this remote
+d) Delete this remote
+y/e/d>
 ```
 
-## How to mount OneDrive
+---
 
-Once logged in:
+## How to Mount OneDrive
 
-1. Mount the drive. The basic syntax is:
+Once logged in to **KDM Data Mover**, mount your drive with:
 
-``` bash
-rclone mount <remote-name>: /path/to/local/mount
+```bash
+rclone mount OneDrive: /home/z1234567/OneDrive --daemon --vfs-cache-mode writes
 ```
 
-We need to add a couple of flags to make this warning free and usable. Most 
-notably `--daemon` and `--vfs-cache-mode writes`.
-
-If you have followed the ResTech recommendations, your command will look like:
-
-``` bash
-[z1234567@kdm ~]$ rclone mount OneDrive: /home/z1234567/OneDrive --daemon --vfs-cache-mode writes
-```
+This mounts your OneDrive folder in the background (`--daemon`) and ensures write caching (`--vfs-cache-mode writes`) for smooth performance.
 
 !!! info
-    Your OneDrive file contents should now be available at /home/z1234567/OneDrive (or chosen mount point). 
+    Your OneDrive files will now appear under `/home/z1234567/OneDrive` (or your chosen mount point).
 
-[OneDrive](https://onedrive.live.com/)
+---
 
-[OneDrive needs your consent](https://consenthelper.it.unsw.edu.au/consent?appId=c8800f43-7805-46c2-b8b2-1c55f3859a4c)
+## Additional Notes
 
-[There are limitations to using RClone with OneDrive](https://rclone.org/onedrive/)
+- To unmount, use:  
+  ```bash
+  fusermount -u /home/z1234567/OneDrive
+  ```
+- You will need to re-run the mount command each session (mounts are temporary).
+- Visit the following resources for more details:  
+  - [OneDrive](https://onedrive.live.com/)  
+  - [Grant OneDrive Consent](https://consenthelper.it.unsw.edu.au/consent?appId=c8800f43-7805-46c2-b8b2-1c55f3859a4c)  
+  - [RClone + OneDrive Limitations](https://rclone.org/onedrive/)
