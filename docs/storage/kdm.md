@@ -2,7 +2,7 @@ title: Katana Data Mover (kdm)
 
 Also known as `kdm` or `kdm.restech.unsw.edu.au`.
 
-If you need to copy, move, compress, or extract data **to or within** the Katana cluster, use the **Katana Data Mover (KDM)** server rather than the cluster head node. KDM is designed to handle many and/or very large transfers without impacting the login/head nodes.
+If you need to copy, move, compress, or extract data to or within the Katana cluster, use the Katana Data Mover (KDM) server rather than the cluster head node. KDM is designed to handle many and/or very large transfers without impacting the login/head nodes.
 
 You can log in to the KDM server using SSH just like you do with Katana:
 
@@ -14,7 +14,7 @@ Once connected you can use standard Linux commands (`cp`, `mv`, `rsync`, `tar`, 
 
 ---
 
-## Why use KDM?
+<h2> Why use KDM?  </h2>
 - KDM is built for data transfers — it avoids overloading the head nodes.  
 - It supports robust tools (rsync) and GUI clients (FileZilla, WinSCP) for large transfers.  
 - For small files (e.g. a few job scripts <2–3 MB) you can copy directly to Katana, but please keep such direct copies minimal.
@@ -24,7 +24,7 @@ Once connected you can use standard Linux commands (`cp`, `mv`, `rsync`, `tar`, 
 
 ---
 
-## Transfer Methods Overview
+<h2> Transfer Methods Overview </h2>
 
 Choose a method depending on your local machine and preference:
 
@@ -37,10 +37,10 @@ Choose a method depending on your local machine and preference:
 
 ---
 
-## Using GUI Clients (FileZilla / WinSCP) — Recommended
+<h2> Using GUI Clients (FileZilla / WinSCP) — Recommended </h2>
 
-<h3> FileZilla (quick steps) </h3>
-1. Install FileZilla (or WinSCP on Windows).  
+<h3> FileZilla on Windows and MacOS (quick steps) </h3>
+1. Install FileZilla (or WinSCP).  
 2. Open **Site Manager** in FileZilla and create a new site:  
    - Host: `kdm.restech.unsw.edu.au`  
    - Protocol: SFTP - SSH File Transfer Protocol  
@@ -48,14 +48,32 @@ Choose a method depending on your local machine and preference:
    - User: `z1234567`  
 3. Connect — you should see the remote filesystem for your Katana account. Drag-and-drop to transfer files.
 
-(See `../assets/filezilla.png` for a sample Site Manager screenshot and `../assets/filezillaquick.png` for Quick Connect.)
+<div style="display: flex; justify-content: space-around;">
+    <div style="flex: 1; margin: 0 10px;">
+        <div style="display: inline-block; text-align: center;">
+            <img src="../../assets/filezilla.png" style="max-width: 100%; height: 300px;"></a>
+        </div>
+    </div>
+</div>
+<div style="flex: 1; margin: 0 10px;">
+        <div style="display: inline-block; text-align: center;">
+            <img src="../../assets/filezillaquick.png" style="max-width: 100%; height: 180px;"></a>
+        </div>
+    </div>
 
 ---
 
-## Command-line Examples (rsync)
+<h2> Command-line Examples (rsync) </h2>
 
 > **Important:** Use `rsync -avh` for readable progress and to preserve file attributes.  
+
 > The trailing colon `:` after the username/host is crucial when copying *to* your home on KDM — it tells `rsync` that the target is a **remote directory**, not a local file.
+
+> rsync is preferred over scp for large or numerous files due to its efficiency and ability to resume interrupted transfers.
+
+> rsync can be included in your scripts for automated data transfers.
+
+> It can only copy unmodified files, saving time and bandwidth.
 
 ---
 
@@ -63,13 +81,12 @@ Choose a method depending on your local machine and preference:
 
 Before using `rsync`, you need to correctly define your **local path** and **remote path**.
 
-- **Local path:** the directory or file on your own computer.  
+**Local path:** the directory or file on your own computer.  
   Examples:  
-  - `~/Documents/myproject/` (your project folder in your home directory)  
-  - `/mnt/data/results/output.csv` (an absolute path on Linux or WSL)  
+  - `/mnt/data/results/output.csv` (an absolute path on Linux or Mac)  
   - `C:\Users\Me\Desktop\file.txt` (an absolute path on Windows)
 
-- **Remote path:** the location on the KDM server.  
+**Remote path:** the location on the KDM server.  
   - Home directory → `z1234567@kdm.restech.unsw.edu.au:`  
   - Scratch directory → `z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567`
 
@@ -83,47 +100,47 @@ Make sure the directory exists before running `rsync`. If it doesn’t, you can 
     When trying to copy files from your local machine to `kdm.restech.unsw.edu.au`, ensure using a new command line terminal (e.g., Command Prompt, PowerShell, Terminal, etc.) on your local machine. Do not run the rsync command from within an SSH session connected to kdm.restech.unsw.edu.au.
 
 
-Copy your local directory `/path/to/my-directory` to your Katana **home** on KDM:
+Copy your local directory `/path/to/my-directory` to your Katana home on KDM:
 
 ```bash
 rsync -avh /path/to/my-directory z1234567@kdm.restech.unsw.edu.au:
 ```
 
-The trailing `:` tells rsync to place files inside your remote **home directory** (e.g., `/home/z1234567`).
+The trailing `:` tells rsync to place files inside your remote home directory (e.g., `/home/z1234567`).
 
 ---
 
 <h3> From my computer to Katana Scratch </h3>
 
-Copy your local directory to your Katana **scratch** area:
+Copy your local directory to your Katana scratch area:
 
 ```bash
-rsync -avh /path/to/my-directory z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567
+rsync -avh /path/to/my-directory z1234567@kdm.restech.unsw.edu.au:/srv/scratch/z1234567/
 ```
 
-The explicit path ensures your files go to the **scratch** storage instead of your home directory.
+The explicit path ensures your files go to the scratch storage instead of your home directory.
 
 ---
 
 <h3> From Katana (KDM) to my computer </h3>
 
-If remote data is in your **home** on KDM:
+If remote data is in your home on KDM:
 
 ```bash
 rsync -avh z1234567@kdm.restech.unsw.edu.au:my-remote-results /home/me/
 ```
 
-If remote data is in **scratch** on KDM:
+If remote data is in scratch on KDM:
 
 ```bash
 rsync -avh z1234567@kdm.restech.unsw.edu.au:/srv/scratch/my-remote-results /home/me/
 ```
 
-In these examples, `/home/me/` is the destination on your **local** computer.
+In these examples, `/home/me/` is the destination on your local computer.
 
 ---
 
-## Tips for Large/Long Transfers
+<h2> Tips for Large/Long Transfers </h2>
 
 - **Keep rsync running** even if your SSH disconnects:  
   Use `tmux` or `screen` on KDM to protect long sessions.  
@@ -152,18 +169,23 @@ In these examples, `/home/me/` is the destination on your **local** computer.
 
 ---
 
-## Mounting University-provided Storage on KDM
+<h2> Mounting University-provided Storage on KDM </h2>
 If your project has access to university staff storage, you may be able to mount or access that storage from KDM. See UNSW's staff storage documentation for details and eligibility. If you need help, contact your local IT support or Research Technology Services.
 
 Useful links:
-- FileZilla: https://filezilla-project.org/  
-- WinSCP: https://winscp.net/eng/download.php  
-- Staff storage overview: https://www.myit.unsw.edu.au/services/staff/storage-staff  
-- FSAM staff storage: https://www.myit.unsw.edu.au/services/staff/storage/fsam-staff
+
+- [FileZilla](https://filezilla-project.org/)
+
+- [WinSCP](https://winscp.net/eng/download.php)
+
+- [Staff storage overview](https://www.myit.unsw.edu.au/services/staff/storage-staff)
+
+- [FSAM staff storage](https://www.myit.unsw.edu.au/services/staff/storage/fsam-staff)
+
 
 ---
 
-## Quick Troubleshooting
+<h2> Quick Troubleshooting </h2>
 - **Authentication fails:** check you are using your zID and zPass; if using keys, ensure your public key is in `~/.ssh/authorized_keys`.  
 - **Slow transfers:** try using `-z` (compression) with rsync for compressible data; check network conditions.  
 - **Permission errors:** ensure you have read/write permission on source and destination paths.  

@@ -1,5 +1,5 @@
 title: Data Archive
-## How to Use the UNSW Data Archive
+<h2> How to Use the UNSW Data Archive </h2>
 
 The [UNSW Data Archive](http://www.dataarchive.unsw.edu.au/) is the university's long-term research data storage platform. It provides free, safe, and secure storage for UNSW researchers, ensuring your data is preserved well beyond the end of a project.
 
@@ -20,7 +20,7 @@ The official documentation provides comprehensive guidance on how to access and 
 
 ---
 
-## Checking the Available Script Versions
+<h2> Checking the Available Script Versions </h2>
 
 Log in to the Katana Data Mover server (`zID@kdm.restech.unsw.edu.au`) and run:
 
@@ -36,7 +36,7 @@ module help unswdataarchive/2021-02-17
 
 ---
 
-## Initial Setup
+<h2> Initial Setup </h2>
 
 Before transferring data, you must create a configuration file that stores your connection details.
 
@@ -83,7 +83,7 @@ Before transferring data, you must create a configuration file that stores your 
 
 ---
 
-## Transferring Data
+<h2> Transferring Data </h2>
 
 Once your configuration file is ready, you can start transferring data between Katana and the Data Archive.
 

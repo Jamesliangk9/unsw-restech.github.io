@@ -15,7 +15,7 @@ The configuration part usually needs to be done once, whereas the "How to mount"
 
 ---
 
-## Prerequisites
+<h2> Prerequisites </h2>
 
 1. [Grant OneDrive consent](https://consenthelper.it.unsw.edu.au/consent?appId=c8800f43-7805-46c2-b8b2-1c55f3859a4c) to allow RClone access to your files.  
 2. We cannot guarantee functionality for users in **Germany or China**, as OneDrive infrastructure there differs due to data regulations.  
@@ -26,7 +26,7 @@ The configuration part usually needs to be done once, whereas the "How to mount"
 
 ---
 
-## Configure RClone for OneDrive
+<h2> Configure RClone for OneDrive </h2>
 
 Log in to **KDM** and run:
 
@@ -74,7 +74,7 @@ y/e/d>
 
 ---
 
-## How to Mount OneDrive
+<h2> How to Mount OneDrive </h2>
 
 Once logged in to **KDM Data Mover**, mount your drive with:
 
@@ -89,7 +89,7 @@ This mounts your OneDrive folder in the background (`--daemon`) and ensures writ
 
 ---
 
-## Additional Notes
+<h2> Additional Notes </h2>
 
 - To unmount, use:  
   ```bash
