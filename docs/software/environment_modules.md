@@ -15,7 +15,95 @@ pgi/13.7
 
 -------------------------- /share/apps/modules/matlab --------------------------
 matlab/2007b          matlab/2010b          matlab/2012a(default)
-matlab/2008b          matlab/2011a          matlab/2012b
+matlab/2008b          matlab/2011a          matlab/2012btitle: Environment Modules
+
+Environment Modules allow you to modify your environment so you can run specific software versions on Katana.
+
+## Discovering Available Software
+
+Run:
+```bash
+module avail
+```
+
+## Software Not Listed?
+
+Email restech.support@unsw.edu.au with software name, version, and URL.
+
+## Loading a Software Version
+
+```bash
+module add matlab/2018b
+# or
+module load matlab/2018b
+```
+
+## Viewing Loaded Modules
+
+```bash
+module list
+```
+
+## Removing Software
+
+```bash
+module rm matlab/2018b
+# or
+module unload matlab/2018b
+```
+
+## Removing All Modules
+
+```bash
+module purge
+```
+
+## Module Help
+
+```bash
+module help mrbayes
+```
+
+## Switching Versions
+
+```bash
+module switch matlab/2018b matlab/2017b
+```
+
+## Viewing Modifications a Module Makes
+
+```bash
+module show mothur/1.42.3
+```
+
+## Why Modules Reset
+
+Modules only apply to the current session.  
+They must be loaded again in new SSH sessions or inside job scripts.
+
+## Using Modules in a Job Script
+
+```bash
+#!/bin/bash
+#PBS -l select=1:ncpus=1:mem=4gb
+#PBS -j oe
+
+module purge
+module add intel/18.0.1.163
+
+cd ${PBS_O_WORKDIR}
+./myprog
+```
+
+## Perl, Python, R Modules
+
+Perl: CPAN  
+Python: PyPI  
+R: CRAN  
+
+See language help pages for installation instructions.  
+If assistance is needed, email restech.support@unsw.edu.au.
+
 matlab/2009b          matlab/2011b          matlab/2013a
 ```
 
