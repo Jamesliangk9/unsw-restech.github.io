@@ -1,7 +1,7 @@
 title: Installing software
 
 
-## Checking if a package is installed
+<h2> Checking if a package is installed </h2>
 
 !!! note
     Before installing software yourself, check if it has already been installed as part of the environment or as a module. You may also want to
@@ -22,7 +22,7 @@ You can see the list of software applications already installed on Katana using 
    module avail
 ```
 
-## R and Python Packages
+<h2> R and Python Packages </h2>
 
 Many Python and R packages are installed on katana. We have specific documentation to install your own packages in [Python](../python#python-virtual-environments)`
 and [R](../r#installing-libraries)
@@ -30,7 +30,7 @@ and [R](../r#installing-libraries)
 !!! note
     If you have tried to install packages software yourself, but you need further assistance, then please send an email to [restech.support@unsw.edu.au](mailto:restech.support@unsw.edu.au).
     
-## Installing a binary package
+<h2> Installing a binary package </h2>
 
 While installing from source is preferred for effeciency reasons, sometimes
 only precompiled binaries are available. When downloading binaries, make sure you select the
@@ -53,7 +53,7 @@ Change file permissions to make the application readable and executable
 chmod u+rx ./application
 ```
 
-## Compiling from source
+<h2> Compiling from source </h2>
 
 Compiling from source is preferred for efficiency reasons but is generally a more complicted process than a binary installation. 
 
@@ -62,13 +62,13 @@ Compiling from source is preferred for efficiency reasons but is generally a mor
 	Otherwise you should install the software in your scratch directory.
 
 
-### Installing software from Github
+<h2># Installing software from Github </h2>
 
 Source code is commonly stored on GitHub for easy version control. Git is available by default on katana. Remember: UNSW has its own [GitHub organisation](../../using_katana/github).
 
 The process to install code which comes from GitHub depends on how the author of the code has set it up. 
 
-### Installing a Github software release
+<h2># Installing a Github software release </h2>
 
 Often the software owner will create a software __release__  which is a copy of the software with everything frozen at that point in time. This helps with reproducability of results
 as you can refer to a specific version of the software and someone else can easily install the same version on their computer. You will often be able to choose between a
@@ -82,7 +82,7 @@ binary version and downloading the source. Downloading the binary and the source
    wget https://github.com/project/project/archive/refs/tags/v1.48.1.tar.gz
 ```
 
-### Github cloning
+<h2># Github cloning </h2>
 
 If the owner of the software has not created a release or the latest release is too old then you can download the repository and use it to compile the software.
 Copy the web address revealed by the green 'Code' button on the repository. Creating a local copy of the repository uses the following command:
@@ -93,12 +93,12 @@ Copy the web address revealed by the green 'Code' button on the repository. Crea
 
 The created folder will then contain the source code and some documentation files.
 
-### README and INSTALL files
+<h2># README and INSTALL files </h2>
 
 The README file contains general information for the software, and often a brief installation guide. INSTALL will contain more detailed installation instructions, including configuration for 
 certain archictures. Please read the README and INSTALL files in full before attempting compilation.
 
-### Compilers 
+<h2># Compilers  </h2>
 
 It is generally best to use the system compilers `gcc` and `ld`. However, many code requires specific compilers and versions. Katana has many compilers available as modules 
 including the [Intel Compilers and Software Libraries](../others#intel-compilers-and-software-libraries)
@@ -106,7 +106,7 @@ including the [Intel Compilers and Software Libraries](../others#intel-compilers
 !!! note 
     Please install software using an interactive session, qsub -I, not directly on the login node. 
 
-### Configuring installation files
+<h2># Configuring installation files </h2>
 
 Commonly, a configuration script is available which allows you to set where the software is installed by using the --prefix flag as well as other options. To install
 the software in your Katana home directory you can use the following command:
@@ -123,7 +123,7 @@ is typically invoked with
    make install
 ```
 
-## Creating module files
+<h2> Creating module files </h2>
 
 Much like katana's `Environment Modules`, you can also have multiple versions
 of the application available through your own modules.

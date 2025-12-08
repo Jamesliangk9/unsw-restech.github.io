@@ -37,7 +37,7 @@ Choose a method depending on your local machine and preference:
 
 ---
 
-<h2> Using GUI Clients (FileZilla / WinSCP) — Recommended </h2>
+<h2> File transfer with GUI Client (FileZilla) — Recommended </h2>
 
 <h3> FileZilla on Windows and MacOS (quick steps) </h3>
 1. Install FileZilla (or WinSCP).  
@@ -63,7 +63,7 @@ Choose a method depending on your local machine and preference:
 
 ---
 
-<h2> Command-line Examples (rsync) </h2>
+<h2> File transfer with command line (rsync)  </h2>
 
 > **Important:** Use `rsync -avh` for readable progress and to preserve file attributes.  
 
