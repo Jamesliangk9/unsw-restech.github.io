@@ -3,7 +3,7 @@ title: R and RStudio
 R is installed as a module with a number of R packages installed. It can be useful to always use the same version of R to avoid the possibility of changes that affect your
 calculations between different versions.
 
-<h2> Installing libraries
+<h2> Installing libraries </h2>
 
 Because R allows users to have their own library of installed packages you will be able to install most packages for yourself. You can see the packages that you have installed along with those
 that come with the version of R that you have loaded by using the following command.
@@ -33,7 +33,7 @@ both load and unload modules.
 
 If you have problems installing a package and would like help installing it please email [restech.support@unsw.edu.au](mailto:restech.support@unsw.edu.au).
 
-<h2> RStudio and JupyterLab in Katana OnDemand
+<h2> RStudio and JupyterLab in Katana OnDemand </h2>
 
 If you would like to use **RStudio** on Katana, we recommend you use [Katana OnDemand](../using_katana/ondemand.md) which allows you to specify the version of R that you
 wish to use including any packages that you have previously installed. Depending on the packages that you have installed you may need to use the module command decribed above.

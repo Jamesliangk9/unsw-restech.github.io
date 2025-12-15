@@ -31,10 +31,6 @@ Run:
 module avail
 ```
 
-<h2> Software Not Listed? </h2>
-
-Email restech.support@unsw.edu.au with software name, version, and URL.
-
 <h2> Loading a Software Version </h2>
 
 ```bash
@@ -104,21 +100,11 @@ They must be loaded again in new SSH sessions or inside job scripts.
 #PBS -j oe
 
 module purge
-module add intel/18.0.1.163 (add these two lines to the script as needed)
+module add intel/18.0.1.163 #(add these two lines to the script as needed)
 
 cd ${PBS_O_WORKDIR}
 ./myprog
 ```
-
-<h2> Perl, Python, R Modules </h2>
-
-Perl: CPAN  
-Python: PyPI  
-R: CRAN  
-
-See language help pages for installation instructions.  
-If assistance is needed, email restech.support@unsw.edu.au.
-
 
 <h2> What if the software that I want is not on the list? </h2>
 
