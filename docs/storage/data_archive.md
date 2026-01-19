@@ -1,59 +1,121 @@
-title: How to use the UNSW Data Archive
+title: Data Archive
+<h2> How to Use the UNSW Data Archive </h2>
 
-The [UNSW Data Archive](http://www.dataarchive.unsw.edu.au/) is the primary research storage facility provided by UNSW. The Data Archive gives UNSW researchers a free, safe and secure storage service to store and access research data well beyond the life of the project that collected that data.
+The [UNSW Data Archive](http://www.dataarchive.unsw.edu.au/) is the university's long-term research data storage platform. It provides free, safe, and secure storage for UNSW researchers, ensuring your data is preserved well beyond the end of a project.
 
-To help researchers make use of this system the Katana Data Mover has a script that you can use to copy files from Katana into a project on the Data Archive system.
+To help researchers transfer data easily, the **Katana Data Mover (KDM)** includes a built-in script for copying files directly from Katana to the Data Archive.
 
 !!! note
-    To use this script you must have access to the UNSW Data Archive which requires setting up a [Research Data Management Plan](https://research.unsw.edu.au/research-data-management-unsw).
+    To use the Data Archive, you must have access to it. This requires creating a [Research Data Management Plan (RDMP)](https://research.unsw.edu.au/research-data-management-unsw).
 
-The best documentation on how to use the `Data Archive` is found on their website:
+---
 
-- using the [web application](http://www.dataarchive.unsw.edu.au/help/web-application-guide)
-- using [SFTP](http://www.dataarchive.unsw.edu.au/help/sftp-client-guide)
-- using the [Command Line](http://www.dataarchive.unsw.edu.au/help/command-line-script-guide)
+<h3> Learn More from the Data Archive Website </h3>
 
-To see what versions of the Data Archive script are available log on to `kdm.restech.unsw.edu.au` and type
+The official documentation provides comprehensive guidance on how to access and manage your data:
 
-``` bash
+- [Web Application Guide](http://www.dataarchive.unsw.edu.au/help/web-application-guide)  
+- [SFTP Client Guide](http://www.dataarchive.unsw.edu.au/help/sftp-client-guide)  
+- [Command Line Script Guide](http://www.dataarchive.unsw.edu.au/help/command-line-script-guide)
+
+---
+
+<h2> Checking the Available Script Versions </h2>
+
+Log in to the Katana Data Mover server (`zID@kdm.restech.unsw.edu.au`) and run:
+
+```bash
 module avail unswdataarchive
 ```
 
-Use the help command for usage
+To view help information for a specific version:
 
-``` bash
+```bash
 module help unswdataarchive/2021-02-17
 ```
 
-## Initial Setup
+---
 
-To use the Data Archive you need to set up a configuration file. Here's how to create the generic config in the directory you are in:
+<h2> Initial Setup </h2>
 
-``` bash
-[z1234567@kdm ~]$ module add unswdataarchive/2021-02-17
-[z1234567@kdm ~]$ get-config-file
+Before transferring data, you must create a configuration file that stores your connection details.
+
+1. **Load the module and create a default config file**
+
+    ```bash
+    [z1234567@kdm ~]$ module add unswdataarchive/2021-02-17
+    [z1234567@kdm ~]$ get-config-file
+    ```
+
+    This command creates a file named `config.cfg` in your current directory, which contains the basic settings for connecting to the Data Archive. (The command may not work if you haven't created a RDMP yet.)
+
+2. **Generate an authentication token**
+
+    Send an email to the [UNSW IT Service Centre](mailto:ITServiceCentre@unsw.edu.au) requesting a **Data Archive token**.  
+    You'll need to specify your **Data Archive namespace**, which looks like one of the following:
+
+    ```
+    /UNSW_RDS/Dxxxxxx
+    /UNSW_RDS/Hxxxxxx
+    ```
+
+    This namespace can be found in your Data Archive welcome email which is the Project ID for your RDMP.
+
+3. **Edit your configuration file**
+
+    Open the `config.cfg` file and locate the line that begins with:
+
+    ```
+    token=
+    ```
+
+    Replace it with your generated token.
+
+4. **(Optional) Use zID and zPass authentication**
+
+    If you don't have a token yet, you can still upload files using your zID and zPass by adding this line to your `config.cfg`:
+
+    ```bash
+    user=z1234567
+    ```
+
+    When you start the upload, the system will prompt you for your zPass.
+
+---
+
+<h2> Transferring Data </h2>
+
+Once your configuration file is ready, you can start transferring data between Katana and the Data Archive.
+
+<h3> Uploading Data to the Archive </h3>
+
+Use the `upload.sh` command to send data **to** the archive:
+
+```bash
+upload.sh /path/to/your/local/directory /UNSW_RDS/D0000000/your/collection/example/
 ```
 
-To generate a token send an email to the [IT Service Centre](mailto:ITServiceCentre@unsw.edu.au) asking for a Data Archive token to be generated. A service desk request for an authentication token to be generated needs to indicate a Data Archive namespace (/UNSW_RDS/Dxxx or /UNSW_RDS/Hxxx) as a scope for the token. Your Data Archive namespace is recorded in the Data Archive welcome email.
+This uploads the specified local directory to the given collection path in the Data Archive.
 
-Then edit the configuration file `config.cfg` and change the line that looks like `token=`
+---
 
-If you haven't generated a token you can also upload content using your zID and zPass by adding the following line to the file `config.cfg` and you will be asked for your zPass when you start the upload.
+<h3> Downloading Data from the Archive </h3>
 
-``` bash
-user=z1234567
-```
+Use the `download.sh` command to retrieve data **from** the archive:
 
-## Starting a data transfer
-
-To get data **into** the archive, we use `upload.sh`
-
-``` bash
-upload.sh /path/to/your/local/directory /UNSW_RDS/D0000000/your/collection/name
-```
-
-To get data **from** the archive, we use `download.sh`
-
-``` bash
+```bash
 download.sh /UNSW_RDS/D0000000/your/collection/name /path/to/your/local/directory
 ```
+
+This downloads the selected collection from the archive into your chosen local directory.
+
+---
+
+<h3> Summary </h3>
+
+| Action | Command | Description |
+|--------|----------|-------------|
+| Upload data | `upload.sh [source] [destination]` | Send files from Katana to the Data Archive |
+| Download data | `download.sh [source] [destination]` | Retrieve files from the Data Archive to Katana |
+| Check available modules | `module avail unswdataarchive` | See available script versions |
+| View module help | `module help unswdataarchive/[version]` | Get usage information for a module |

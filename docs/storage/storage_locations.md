@@ -7,7 +7,7 @@ The storage on Katana is split into several different types, each of which serve
 
     If you specifically wish to increase Katana storage allocations, please email [restech.support@unsw.edu.au](mailto:restech.support@unsw.edu.au) - note that such increases are not automatic.
 
-## Storage  Summary
+<h2> Storage  Summary </h2>
 
 <table>
 <thead>

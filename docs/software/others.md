@@ -1,6 +1,6 @@
 title: Others
 
-## Ansys
+<h2> Ansys </h2>
 
 Both Ansys Workbench and Ansys Electronic Desktop are available on Katana. The most user friendly
 way to run Ansys is to use [Katana OnDemand](../using_katana/ondemand.md). 
@@ -54,7 +54,7 @@ examples in [our Github repository](https://github.com/unsw-edu-au/Restech-HPC/b
 If you have an account on [Gadi](https://nci.org.au/our-services/supercomputing), the Supercomputer located at [NCI](https://nci.org.au/), you can also use Ansys there once you join the on once you have an account. UNSW has a institutional licence
 that requies you join the relevant software group as detailed in [NCI's documentation](https://opus.nci.org.au/display/Help/Ansys+Fluent).
 
-## Biosciences
+<h2> Biosciences </h2>
 
 There are a number of Bioscience software packages installed. If you are having trouble finding a software package it might be within another package such as the ones mentioned on this
 page.
@@ -102,7 +102,7 @@ If you would like to install software using Conda there are instructions on how 
     Some software packages like Bioconductor do not work well if installed in Conda due to software dependencies and the time that it takes for a new version
 	of the software to be included in Conda.
 
-## Comsol
+<h2> Comsol </h2>
 The most user friendly way to run Comsol interactively is to use [Katana OnDemand](../using_katana/ondemand.md).
 
 !!! note
@@ -135,7 +135,7 @@ An example comsol batch job file is available in [our GitHub repository](https:/
     -batchlog ${MY_COMSOL_DIR}/MyModel.log
 ```
 
-## Intel Compilers and Software Libraries
+<h2> Intel Compilers and Software Libraries </h2>
 
 Research Technology Services has a licence for Intel Compiler Collection which can be accessed by loading a module and contains 4 groups of software, namely compilers, libraries, a debugger
 and MPI. This software has been optimised by Intel to take advantage of the specific capabilities of the different intel CPUs installed in the Intel based clusters.
@@ -151,7 +151,7 @@ and MPI. This software has been optimised by Intel to take advantage of the spec
 - Debugger
     - Intel Debugger (idbc)
 
-## Java
+<h2> Java </h2>
 
 Java is installed as part of the Operating System but that version of Java can change without warning leading to reproducable concerns. Because of this risk
 we recommend using one of the versions of Java available via the [module command](../../software/environment_modules).
@@ -171,7 +171,7 @@ This sets the heap memory to 1GB. If you need more, set the environment variable
 ```
 
 
-## Matlab
+<h2> Matlab </h2>
 
 **Running interactively**
 PBS_O_WORKDIR
@@ -224,14 +224,14 @@ module load matlab/R2022a
 matlab -batch -r scriptfile
 ```
 
-## Operating Systems
+<h2> Operating Systems </h2>
 
 Katana nodes currently run Rocky Linux. To find out exactly which version you can use the command `#!bash cat /etc/redhat-release`.
 
 Research software is installed in [environment modules](../../software/environment_modules/). This enables multiple versions of the same software to be installed, 
 and each user can choose which version they wish to use.
 
-## Perl
+<h2> Perl </h2>
 
 The default version of Perl on Katana is 5.26.3, which is provided by Rocky Linux and can be found at `#!bash /usr/bin/perl`.
 
@@ -252,7 +252,7 @@ However, that will restrict you to the default version of Perl supplied with the
 This will then look in your path so if you load Perl via an environment module it will not be necessary to modify your scripts.
 
 <!--
-## SAS
+<h2> SAS </h2>
 
 The 64-bit version of SAS is available as a module.
 
@@ -263,7 +263,7 @@ By default SAS will store temporary files in `/tmp` which can easily fill up, le
 ```
 -->
 
-## Stata
+<h2> Stata </h2>
 
 Stata is available as a module. 
 
@@ -281,7 +281,7 @@ it just remains to tell Stata to look in that directory which can be done by usi
 sysdir set PERSONAL $HOME/myadofiles
 ```
 
-## tmux
+<h2> tmux </h2>
 
 When you login to Katana using the terminal, it is a "live" session - if you close the terminal or turn off your computer the session will close. If you have a long running program such as
 downloading a large data set or have an [interactive session running from the command line](../../help_support/glossary#interactive-jobs) and you need to go somewhere else then you may
@@ -298,7 +298,7 @@ When you wish to reconnect you login to the server that you used last time and r
 `tmux` has a number of other useful features such as multiple sessions and split screens. More information on features and how to use `tmux` is available
 on [the tmux website](https://github.com/tmux/tmux/wiki).
 
-## Zip
+<h2> Zip </h2>
 
 **Compressing Large Directories**
 
