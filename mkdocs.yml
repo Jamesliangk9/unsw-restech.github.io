@@ -46,6 +46,7 @@ repo_url: https://github.com/unsw-restech/unsw-restech.github.io
 repo_name: unsw-restech/katana-docs
 nav:
     - 'index.md'
+    - 'using_katana/troubleshooting_navigation.md'
     - 'Getting Started':
         - 'using_katana/accessing_katana.md'
         - 'using_katana/running_jobs.md'
