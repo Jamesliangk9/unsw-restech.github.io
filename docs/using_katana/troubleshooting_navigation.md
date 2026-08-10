@@ -1,10 +1,10 @@
-title: Navigation and Troubleshooting
+title: Navigation and Quick Start Guide
 
-# Finding Information and Troubleshooting on Katana
+# Finding Information and Getting Started on Katana
 
-Katana documentation is organised by task. When you are unsure where to begin, first identify what you are trying to do, then use the links below to find the relevant instructions.
+Katana documentation is organised into sections covering access, jobs, storage, software, data transfer, and support. If you are unsure where to begin, use the links below to identify the section most relevant to your work.
 
-This page also provides a basic troubleshooting workflow for common Katana problems. It is intended as a starting point rather than a replacement for the detailed documentation linked throughout the page.
+This page also provides a short starting path for new users, followed by practical checks that can help confirm that a Katana session and job are working as expected.
 
 ---
 
@@ -18,6 +18,7 @@ This page also provides a basic troubleshooting workflow for common Katana probl
 | Check, modify, or delete a job | [Monitor Your Jobs](/using_katana/monitor_jobs/) |
 | Decide where to store files | [Storage Locations](/storage/storage_locations/) |
 | Transfer, move, compress, or extract large files | [Katana Data Mover](/storage/kdm/) |
+| Transfer files between OneDrive and Katana | [OneDrive](/storage/onedrive/) |
 | Store research data for the long term | [Data Archive](/storage/data_archive/) |
 | Find and load installed software | [Environment Modules](/software/environment_modules/) |
 | Install my own software | [Installing Software](/software/installing_software/) |
@@ -41,59 +42,102 @@ New Katana users will usually need the following pages in this order:
 3. [Running Jobs on Katana](/using_katana/running_jobs/)
 4. [Monitor Your Jobs](/using_katana/monitor_jobs/)
 5. [Environment Modules](/software/environment_modules/)
-6. The page for the application or programming language being used
-
-The basic workflow is:
-
-```text
-Connect to Katana
-        ↓
-Prepare files and software
-        ↓
-Request compute resources
-        ↓
-Run the job
-        ↓
-Monitor the job
-        ↓
-Review output and resource usage
-```
 
 ---
 
-# Troubleshooting Workflow
+# Quick Start Guide
 
-When something does not work, avoid changing several commands at once. Collect information step by step so that the source of the problem is easier to identify.
+This section introduces a basic Katana command-line workflow. It is intended for users who have connected to Katana but are not yet familiar with the commands used to check their session, request compute resources, and confirm that a job is running correctly.
 
 !!! note
-    The job IDs, node names, filenames, module versions, and paths shown below are examples. Replace them with values from your own session before running the commands.
+    User IDs, job IDs, node names, filenames, module versions, and paths shown below are examples. Replace them with values from your own session.
 
-## 1. Check Where You Are
+## 1. Connect to Katana
 
-Run:
+From a terminal on your computer, connect using your UNSW zID:
+
+```bash
+ssh z1234567@katana.restech.unsw.edu.au
+```
+
+Replace `z1234567` with your own zID.
+
+After logging in, confirm the machine name:
 
 ```bash
 hostname
+```
+
+On a login node, the hostname will normally begin with `katana`.
+
+!!! warning
+    Login nodes are intended for preparing files, submitting jobs, transferring small files, and monitoring jobs. Computationally intensive work should be run through PBS on a compute node.
+
+---
+
+## 2. Check Your Current Location
+
+Before running or submitting a job, confirm your current directory and account:
+
+```bash
 pwd
 whoami
 ```
 
-These commands show:
+`pwd` shows your current directory, for example:
 
-- the machine you are connected to
-- your current directory
-- the account being used
+```text
+/home/z1234567
+```
 
-A Katana login node normally has a hostname beginning with `katana`. A compute node normally has a hostname such as `k001`.
+`whoami` shows the account currently being used, for example:
 
-!!! warning
-    Login nodes are intended for preparing files, submitting jobs, and monitoring jobs. Run computationally intensive work on a compute node through an interactive or batch job.
+```text
+z1234567
+```
+
+These checks are useful when a command cannot find a file or when you are unsure which directory you are working in.
 
 ---
 
-## 2. Check Your Jobs
+## 3. Start an Interactive Job
 
-Show your current jobs:
+An interactive job gives you a shell on a compute node. This is useful for testing commands, checking software, and running short interactive workloads.
+
+For example:
+
+```bash
+qsub -I -l select=1:ncpus=2:mem=8gb -l walltime=02:00:00
+```
+
+This requests:
+
+- 1 compute node
+- 2 CPU cores
+- 8 GB of memory
+- a maximum runtime of 2 hours
+
+The command may wait while resources are allocated.
+
+When the job starts, confirm the compute node with:
+
+```bash
+hostname
+```
+
+You should now see a compute-node hostname such as:
+
+```text
+k001
+```
+
+At this point, commands in this terminal are running within the resources allocated to your interactive job.
+
+---
+
+## 4. Check Your Jobs
+
+To see your current PBS jobs:
 
 ```bash
 qstat -su "$USER"
@@ -105,123 +149,44 @@ Common job states include:
 |---|---|
 | `Q` | Queued and waiting to start |
 | `R` | Running |
-| `C` | Completed |
 | `H` | Held |
 | `E` | Exiting |
-| `S` | Suspended |
 | `F` | Finished; check the exit status and output files to determine the result |
 
-View full details for a job:
+To view detailed information about a job:
 
 ```bash
 JOB_ID=6900507
 qstat -f "$JOB_ID"
 ```
 
-View information retained for a completed job:
+Replace `6900507` with your own job ID.
 
-```bash
-JOB_ID=6900507
-qstat -H "$JOB_ID"
-```
-
-You can also use:
-
-```bash
-JOB_ID=6900507
-qstat -xf "$JOB_ID"
-```
-
-Replace `6900507` with the numeric job ID returned by `qsub`.
+For more information, see [Monitor Your Jobs](/using_katana/monitor_jobs/).
 
 ---
 
-## 3. Check the Output and Error Files
+## 5. Find and Load Software
 
-List recently modified files:
-
-```bash
-ls -lht
-```
-
-To find the output path recorded by PBS:
-
-```bash
-JOB_ID=6900507
-qstat -xf "$JOB_ID"
-```
-
-Look for the `Output_Path` and `Error_Path` fields.
-
-Read an output file with `less`:
-
-```bash
-less myjob.o6900507
-```
-
-Press `q` to leave `less`.
-
-Output filenames depend on the job script and submission options, so use the paths reported by `qstat -xf` rather than assuming a particular filename.
-
-Look for:
-
-- the first meaningful error message
-- missing files
-- missing commands or libraries
-- memory errors
-- walltime termination
-- an unexpected working directory
-- a non-zero exit status
-
-!!! tip
-    Start with the first meaningful error message. Later messages are often consequences of the first failure.
-
----
-
-## 4. Confirm the Working Directory
-
-Inside a PBS batch script, use:
-
-```bash
-cd "$PBS_O_WORKDIR"
-```
-
-This changes the job to the directory from which it was submitted.
-
-You can temporarily add the following diagnostic commands to a job script:
-
-```bash
-echo "Job ID: $PBS_JOBID"
-echo "Node: $(hostname)"
-echo "Working directory: $(pwd)"
-echo "Start time: $(date)"
-```
-
-These lines record useful information in the job output.
-
----
-
-## 5. Confirm the Software Environment
-
-List the modules loaded in the current shell:
+List the modules currently loaded:
 
 ```bash
 module list
 ```
 
-Search for available software:
+Browse available modules:
 
 ```bash
 module avail
 ```
 
-Search for available Python modules:
+Search for Python:
 
 ```bash
 module avail python
 ```
 
-Load a version that appears in the output. For example:
+Load a version shown by `module avail`, for example:
 
 ```bash
 module load python/3.10.8
@@ -235,52 +200,103 @@ python3 --version
 ```
 
 !!! note
-    Modules apply only to the current shell. Load the required modules again in each new SSH session and inside each PBS job script.
+    The version shown above is only an example. Use a version currently available on Katana.
 
-A job script can begin with:
-
-```bash
-module purge
-module load python/3.10.8
-```
-
-Replace the example Python version with a version currently shown by `module avail python`.
+Modules apply to the current shell. If you open another SSH session or submit a batch job, load the required modules again in that shell or job script.
 
 ---
 
-## 6. Confirm the Requested Resources
+## 6. Work from the Correct Directory
 
-View the resource request recorded for a job:
-
-```bash
-JOB_ID=6900507
-qstat -f "$JOB_ID"
-```
-
-Check that the request includes enough:
-
-- CPU cores
-- memory
-- walltime
-- GPUs, when required
-
-An interactive CPU job can be requested with:
+Check your location:
 
 ```bash
-qsub -I -l select=1:ncpus=2:mem=8gb -l walltime=02:00:00
+pwd
 ```
 
-A basic GPU job can be requested with:
+List files:
 
 ```bash
-qsub -I -l select=1:ncpus=4:mem=32gb:ngpus=1 -l walltime=02:00:00
+ls -lah
 ```
 
-If `ngpus` is not specified, the job does not receive a GPU.
+Your home directory can be referenced with:
+
+```bash
+$HOME
+```
+
+Your scratch directory can be referenced with:
+
+```bash
+/srv/scratch/$USER
+```
+
+For example:
+
+```bash
+cd /srv/scratch/$USER
+```
+
+Use scratch for working data and large temporary research files.
+
+!!! warning
+    Scratch storage is not backed up. Keep another copy of important data in an appropriate backed-up or archival location.
+
+See [Storage Locations](/storage/storage_locations/) for guidance.
 
 ---
 
-## 7. Check GPU Availability and Select a GPU
+## 7. Transfer Large Files Using KDM
+
+For large data transfers, use the Katana Data Mover rather than the Katana login nodes.
+
+Connect to KDM:
+
+```bash
+ssh z1234567@kdm.restech.unsw.edu.au
+```
+
+Replace `z1234567` with your own zID.
+
+For a large or restartable transfer, use `rsync`:
+
+```bash
+rsync -avhP /path/to/source/ /srv/scratch/$USER/my-project/
+```
+
+Replace the example source and destination paths with your own.
+
+### Copying files from OneDrive to scratch
+
+After OneDrive has been configured and mounted on KDM, copy files from the mounted OneDrive directory to scratch.
+
+For example:
+
+```bash
+mkdir -p /srv/scratch/$USER/my-project
+
+rsync -avhP     /home/$USER/OneDrive/path/to/files/     /srv/scratch/$USER/my-project/
+```
+
+For a single file:
+
+```bash
+rsync -avhP     /home/$USER/OneDrive/path/to/file     /srv/scratch/$USER/
+```
+
+The `-P` option displays transfer progress and keeps partially transferred files if a transfer is interrupted.
+
+!!! note
+    The exact OneDrive mount path depends on how OneDrive has been configured. Confirm the mounted directory before starting the transfer.
+
+See [Katana Data Mover](/storage/kdm/) and [OneDrive](/storage/onedrive/) for the full instructions.
+
+---
+
+## 8. Request a GPU When Needed
+
+A normal CPU job does not receive a GPU automatically.
 
 View the current node overview:
 
@@ -288,7 +304,7 @@ View the current node overview:
 pstat
 ```
 
-List the GPU models configured on Katana:
+List GPU models configured on Katana:
 
 ```bash
 pbsnodes -av | grep gpu_model
@@ -300,30 +316,19 @@ To reduce repeated lines:
 pbsnodes -av | grep gpu_model | sort -u
 ```
 
-Inspect a particular node:
+Request a GPU:
 
 ```bash
-NODE=k206
-pbsnodes "$NODE"
+qsub -I -l select=1:ncpus=4:mem=32gb:ngpus=1 -l walltime=02:00:00
 ```
 
-Replace `k206` with a node name shown by `pstat` or `pbsnodes`.
-
-Request a specific GPU model by using a value shown by `pbsnodes -av | grep gpu_model`.
-
-For example, to request an A100:
-
-```bash
-qsub -I -l select=1:ncpus=4:mem=32gb:ngpus=1:gpu_model=A100 -l walltime=02:00:00
-```
-
-To request an H200, first confirm that `H200` appears in the available GPU model output, then run:
+To request a specific GPU model, first check the available `gpu_model` values. For example:
 
 ```bash
 qsub -I -l select=1:ncpus=4:mem=32gb:ngpus=1:gpu_model=H200 -l walltime=02:00:00
 ```
 
-After the interactive job starts, confirm the allocated node and GPU:
+After the job starts:
 
 ```bash
 hostname
@@ -331,85 +336,39 @@ nvidia-smi
 ```
 
 !!! note
-    Requesting a specific GPU model can increase queue time because the job can only run on nodes containing that model. When a specific model is not required, omit `gpu_model` and allow PBS to allocate any available GPU.
+    Requesting a specific GPU model can increase queue time because the job can only run on nodes containing that model.
 
 ---
 
-## 8. Check Storage and Paths
+## 9. Finish an Interactive Job
 
-Show files in the current directory:
-
-```bash
-ls -lah
-```
-
-Show free space on the filesystems containing your home and scratch directories:
+When finished:
 
 ```bash
-df -h "$HOME" "/srv/scratch/$USER"
+exit
 ```
 
-This reports filesystem space. It does not report your personal storage allocation or quota.
+This ends the interactive job and releases the allocated resources.
 
-Check how much space your directories currently use:
+Confirm that the job is no longer running:
 
 ```bash
-du -sh "$HOME"
-du -sh "/srv/scratch/$USER"
+qstat -su "$USER"
 ```
-
-Common storage-related problems include:
-
-- writing large datasets to the home directory
-- using an incorrect absolute path
-- trying to access a file that exists only on another computer
-- permission problems in a shared directory
-- expecting scratch storage to be backed up
-- expecting files in `$TMPDIR` to remain after a job finishes
-
-See [Storage Locations](/storage/storage_locations/) before moving or deleting important data.
-
-For large transfers and file-management tasks, use the [Katana Data Mover](/storage/kdm/) rather than the login nodes.
 
 ---
 
-## 9. Reproduce the Problem Interactively
+# Troubleshooting
 
-When a batch job fails without a clear explanation, request a short interactive session with similar resources:
+## My Job Is Waiting in the Queue
 
-```bash
-qsub -I -l select=1:ncpus=2:mem=8gb -l walltime=02:00:00
-```
-
-Then reproduce the setup one command at a time. For example:
+Check the job state:
 
 ```bash
-cd "$HOME/my-project"
-module purge
-module load python/3.10.8
-python3 my-script.py
+qstat -su "$USER"
 ```
 
-Replace the project path, module version, and script name with your own values.
-
-Interactive testing is useful for:
-
-- checking paths
-- testing module combinations
-- installing software
-- confirming package versions
-- identifying missing input files
-- testing a smaller version of the workload
-
-Once the commands work interactively, place the same setup in the batch script.
-
----
-
-# Common Problems
-
-## My Job Is Stuck in the Queue
-
-Check the job:
+For more detail:
 
 ```bash
 JOB_ID=6900507
@@ -418,135 +377,105 @@ qstat -f "$JOB_ID"
 
 A queued job may be waiting because the requested combination of CPU, memory, GPU model, and walltime is not currently available.
 
-Consider whether the job genuinely needs:
-
-- the requested number of CPU cores
-- the requested amount of memory
-- a particular GPU model
-- a long walltime
-
-Requesting fewer resources or a shorter walltime may allow the scheduler to place the job sooner, but only reduce resources when the workload can genuinely run within the smaller request.
-
-See [Monitor Your Jobs](/using_katana/monitor_jobs/) for more information.
-
 ---
 
 ## My Job Finished Immediately
 
-Check the output and error files first:
+Check the completed-job information:
+
+```bash
+JOB_ID=6900507
+qstat -xf "$JOB_ID"
+```
+
+Then list recently modified files:
 
 ```bash
 ls -lht
 ```
 
-Then check the completed-job information:
+Look for the first meaningful error message, missing files, missing commands or libraries, an incorrect working directory, or a non-zero exit status.
+
+Read an output file with:
 
 ```bash
-JOB_ID=6900507
-qstat -xf "$JOB_ID"
+less filename
 ```
 
-Verify that:
+Press `q` to leave `less`.
 
-- the command exists
-- the required module was loaded in the job script
-- the input files exist
-- the working directory is correct
-- the script uses Linux line endings
-- the script has no typing or syntax errors
+---
 
-Add the following near the beginning of a shell script while debugging:
+## My Batch Job Cannot Find My Files
+
+Inside a PBS batch script, add:
 
 ```bash
-set -x
+cd "$PBS_O_WORKDIR"
 ```
 
-This prints commands as the shell executes them, making it easier to identify where the script stopped.
+You can also add:
 
-Remove `set -x` after debugging if the output becomes unnecessarily large.
+```bash
+echo "Job ID: $PBS_JOBID"
+echo "Node: $(hostname)"
+echo "Working directory: $(pwd)"
+echo "Start time: $(date)"
+```
+
+These lines record useful diagnostic information in the job output.
 
 ---
 
 ## A Command Works in One Terminal but Not Another
 
-The software may have been loaded only in the first shell.
-
-Run:
+Check loaded modules:
 
 ```bash
 module list
 ```
 
-Then load the required module again in the new shell or job script.
+If the required module is missing, load it again.
 
-Environment changes made in one SSH session are not automatically copied to another session.
-
----
-
-## My Job Was Killed
-
-Check the completed-job information and output:
-
-```bash
-JOB_ID=6900507
-qstat -xf "$JOB_ID"
-```
-
-Common causes include:
-
-- the job exceeded its requested memory
-- the job reached its walltime
-- the application exited with an error
-- the job was deleted manually or administratively
-
-Use the recorded resource usage to adjust the next request. Avoid requesting substantially more resources than the workload needs, because larger requests can wait longer in the queue.
+Environment changes made in one SSH session are not automatically copied to another session. Required modules should also be loaded inside PBS job scripts.
 
 ---
 
 ## My GPU Application Cannot Find a GPU
 
-Confirm that the job requested a GPU:
+Confirm that the active job requested a GPU:
 
 ```bash
 JOB_ID=6900507
 qstat -f "$JOB_ID"
 ```
 
-On the allocated compute node, run:
+On the allocated compute node:
 
 ```bash
 hostname
 nvidia-smi
 ```
 
-Also confirm that:
-
-- `ngpus=1` was included in the resource request
-- the application is running inside the allocated job
-- the correct GPU-enabled software module or environment was loaded
-- the installed software version supports the available GPU environment
-
-Do not test GPU workloads on a login node.
+Check that `ngpus=1` was included in the resource request and that the required GPU-enabled software environment has been loaded.
 
 ---
 
 ## My SSH Session Disconnected
 
-Log in again and check whether the job still exists:
+Log in again and check your jobs:
 
 ```bash
 qstat -su "$USER"
 ```
 
-A submitted batch job runs independently of the SSH session. An interactive shell may no longer be usable after the connection is lost.
-
-For long-running production workloads, use a batch job rather than relying on an interactive terminal connection.
+A batch job continues independently of the SSH session. For long-running production workloads, use a batch job rather than relying on an interactive terminal connection.
 
 ---
 
 ## I Cannot Find My Output File
 
-Check the PBS record:
+For a completed job:
 
 ```bash
 JOB_ID=6900507
@@ -555,17 +484,30 @@ qstat -xf "$JOB_ID"
 
 Look for `Output_Path` and `Error_Path`.
 
-Also check the directory from which the job was submitted:
+Also check:
 
 ```bash
 pwd
 ls -lht
 ```
 
-Including the following line in a batch script helps ensure that it runs from the submission directory:
+---
+
+## I Am Running Out of Storage Space
+
+Show filesystem space:
 
 ```bash
-cd "$PBS_O_WORKDIR"
+df -h "$HOME" "/srv/scratch/$USER"
+```
+
+This reports filesystem space, not your personal allocation.
+
+Check how much space your directories are using:
+
+```bash
+du -sh "$HOME"
+du -sh "/srv/scratch/$USER"
 ```
 
 ---
@@ -594,6 +536,7 @@ Useful commands include:
 hostname
 pwd
 module list
+qstat -su "$USER"
 ```
 
 For an active job:
@@ -610,8 +553,6 @@ JOB_ID=6900507
 qstat -xf "$JOB_ID"
 ```
 
-Copy error messages as text where possible. Screenshots can provide additional context, but text is easier to search and inspect.
-
 See [Help and Support](/help_support/user_support/) for current contact methods.
 
 ---
@@ -622,9 +563,9 @@ Before requesting help, confirm the following:
 
 - [ ] I am running computational work inside a PBS job, not on a login node.
 - [ ] I checked the job state with `qstat`.
-- [ ] I read the complete output and error files.
+- [ ] I read the complete output and error information.
 - [ ] I confirmed the working directory and input paths.
-- [ ] I loaded the required software modules inside the job script.
+- [ ] I loaded the required software modules inside the job or shell where the command is running.
 - [ ] I checked the requested CPU, memory, walltime, and GPU resources.
 - [ ] I recorded the job ID and compute node.
 - [ ] I can describe the steps needed to reproduce the problem.
