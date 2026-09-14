@@ -2,10 +2,7 @@ title: Home
 
 # Katana - Shared Computational Cluster at UNSW 
 
-Katana is a computational cluster at UNSW with over 6,000 CPU cores, 8 GPU compute nodes (V100 and A100), 
-and 6Pb of disk storage allowing users to run jobs not feasible on personal devices because they take too long,
-require too much memory, there is too much data, there is data shared between multiple people, or just too many
-calculations that need to be run. See [details](/using_katana/about_katana) for more information about Katana.
+Katana is a computational cluster at UNSW that allows users to run jobs not feasible on personal devices because they take too long, require too much memory, involve large amounts of data, require data sharing between multiple people, or involve too many calculations. See [details](/using_katana/about_katana) for more information about Katana.
 
 Information on how to request a Katana account can be found with the
 [information on how to access Katana](using_katana/accessing_katana/#requesting-an-account).
